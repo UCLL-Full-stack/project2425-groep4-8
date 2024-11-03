@@ -3,14 +3,28 @@ export class Ingredient {
     readonly name: string;
     readonly category: string;
 
-    constructor(name: string, category: string) {
-        this.name = name;
-        this.category = category;
+    constructor(ingredient: { id?: number; name: string; category: string }) {
+        this.validate(ingredient);
+        this.id = ingredient.id;
+        this.name = ingredient.name;
+        this.category = ingredient.category;
+    }
+
+    validate(ingredient: { id?: number; name: string; category: string }) {
+        if (!ingredient.name) {
+            throw new Error('Ingredient name is required');
+        }
+
+        if (!ingredient.category) {
+            throw new Error('Ingredient category is required');
+        }
     }
 
     equals(ingredient: Ingredient): boolean {
         return this.name === ingredient.name && this.category === ingredient.category;
     }
-}
 
-export default { Ingredient };
+    static from(ingredient: { id?: number; name: string; category: string }): Ingredient {
+        return new Ingredient(ingredient);
+    }
+}
