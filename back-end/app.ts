@@ -13,10 +13,19 @@ import { Request, Response, NextFunction } from 'express';
 
 const app = express();
 dotenv.config();
-const port = process.env.APP_PORT || 3000;
+const port = process.env.APP_PORT || 3001;
 
 app.use(cors());
 app.use(bodyParser.json());
+
+app.use(
+    expressjwt({
+        secret: process.env.JWT_SECRET || 'default_secret',
+        algorithms: ['HS256'],
+    }).unless({
+        path: ['/api-docs', /^\/api-docs\/.*/, '/users/login', '/users/signup', '/status'],
+    })
+);
 
 app.use('/users', userRouter);
 app.use('/recipes', recipeRouter);
@@ -41,6 +50,14 @@ app.get('/status', (req, res) => {
     res.json({ message: 'Back-end is running...' });
 });
 
-app.listen(port || 3000, () => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    if (err.name === 'UnauthenticatedError') {
+        res.status(401).json({ status: 'application error', message: err.message });
+    } else {
+        res.status(400).json({ status: 'application error', message: err.message });
+    }
+});
+
+app.listen(port || 3001, () => {
     console.log(`Back-end is running on port ${port}.`);
 });

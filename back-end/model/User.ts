@@ -1,5 +1,7 @@
 import { Recipe } from './Recipe';
 import { Review } from './Review';
+import { Role } from '../types';
+import { User as UserPrisma, Recipe as RecipePrisma, Review as ReviewPrisma } from '@prisma/client';
 
 export class User {
     readonly id?: number;
@@ -10,6 +12,7 @@ export class User {
     readonly lastName: string;
     readonly recipes?: Recipe[];
     readonly reviews?: Review[];
+    readonly role: Role;
 
     constructor(user: {
         id?: number;
@@ -20,6 +23,7 @@ export class User {
         lastName: string;
         recipes?: Recipe[];
         reviews?: Review[];
+        role: Role;
     }) {
         this.validate(user);
         this.id = user.id;
@@ -30,6 +34,7 @@ export class User {
         this.lastName = user.lastName;
         this.recipes = user.recipes;
         this.reviews = user.reviews;
+        this.role = user.role;
     }
 
     private validate(user: {
@@ -45,6 +50,10 @@ export class User {
 
         if (!user.password) throw new Error('Password is required');
 
+        if (!user.password?.trim()) {
+            throw new Error('Password must be at least 3 characters long');
+        }
+
         const emailRegex = /\S+@\S+\.\S+/;
         if (!user.email) throw new Error('Email is required');
         if (!emailRegex.test(user.email)) throw new Error('Invalid email format');
@@ -53,19 +62,46 @@ export class User {
         if (!user.lastName) throw new Error('Last name is required');
     }
 
+    // static filterReviewsForRecipe(
+    //     recipe: RecipePrisma & { reviews: ReviewPrisma[] },
+    //     userId: number
+    // ): Review[] {
+    //     return recipe.reviews
+    //         .filter((review) => review.userId === userId)
+    //         .map((review) => new Review(review));
+    // }
+
     equals(user: User): boolean {
         return this.username === user.username && this.email === user.email;
     }
 
-    // static from(userPrisma: any): User {
-    //     return new User(
-    //         userPrisma.username,
-    //         userPrisma.password,
-    //         userPrisma.email,
-    //         userPrisma.firstName,
-    //         userPrisma.lastName,
-    //         userPrisma.recipes,
-    //         userPrisma.reviews
-    //     );
-    // }
+    static from = (
+        user: UserPrisma & {
+            recipes: (RecipePrisma & { reviews?: ReviewPrisma[] })[];
+            reviews: ReviewPrisma[];
+        }
+    ): User => {
+        return new User({
+            id: user.id,
+            username: user.username,
+            password: user.password,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            role: user.role as Role,
+            recipes: user.recipes.map((recipe) =>
+                Recipe.from({
+                    ...recipe,
+                    reviews: (recipe.reviews ?? []).map((review) => ({
+                        id: review.id,
+                        text: review.text,
+                        score: review.score,
+                        recipeId: review.recipeId,
+                        userId: review.userId,
+                    })),
+                })
+            ),
+            reviews: user.reviews.map((review) => new Review(review)),
+        });
+    };
 }

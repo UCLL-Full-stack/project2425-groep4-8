@@ -1,6 +1,7 @@
 import UserService from '../service/User.service';
 import { User } from '../model/User';
 import express, { NextFunction, Request, Response } from 'express';
+import { UserInput } from '../types';
 
 const userRouter = express.Router();
 
@@ -161,7 +162,8 @@ userRouter.get('/email/:email', async (req: Request, res: Response, next: NextFu
  */
 userRouter.get('/username/:username', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const user = await UserService.getUserByUsername(req.params.username);
+        const username = req.params.username;
+        const user = await UserService.getUserByUsername(username);
         if (!user) {
             res.status(404).json({ message: 'User not found' });
             return;
@@ -174,7 +176,7 @@ userRouter.get('/username/:username', async (req: Request, res: Response, next: 
 
 /**
  * @swagger
- * /users:
+ * /users/signup:
  *   post:
  *     summary: Create a new user
  *     tags: [Users]
@@ -196,24 +198,53 @@ userRouter.get('/username/:username', async (req: Request, res: Response, next: 
  *       500:
  *         description: Internal server error
  */
-userRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
+userRouter.post('/signup', async (req: Request, res: Response, next: NextFunction) => {
     try {
         console.log(req.body);
-        const userData = req.body as User;
-
-        console.log('First Name:', userData.firstName);
-        console.log('Last Name:', userData.lastName);
-
-        const newUser = new User({
-            username: userData.username,
-            password: userData.password,
-            email: userData.email,
-            firstName: userData.firstName,
-            lastName: userData.lastName
-        });
-
-        const createdUser = await UserService.createUser(newUser);
+        const userData = <UserInput>req.body;
+        const createdUser = await UserService.createUser(userData);
         res.status(201).json(createdUser);
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /users/login:
+ *   post:
+ *     summary: Authenticate a user
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: "john_doe"
+ *               password:
+ *                 type: string
+ *                 example: "securePassword123"
+ *     responses:
+ *       200:
+ *         description: Authentication successful, returns user data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Invalid email or password
+ *       500:
+ *         description: Internal server error
+ */
+userRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userData = <UserInput>req.body;
+        const user = await UserService.authenticate(userData);
+        res.status(201).json(user);
     } catch (error) {
         next(error);
     }

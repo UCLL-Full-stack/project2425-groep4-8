@@ -1,64 +1,51 @@
-import { RecipeIngredient } from '@prisma/client';
-import { User } from './User';
+import { Ingredient } from './Ingredient';
+import { RecipeIngredient } from './RecipeIngredient';
 import { Review } from './Review';
+import { User } from './User';
+import {
+    RecipeIngredient as RecipeIngredientPrisma,
+    Recipe as RecipePrisma,
+    Review as ReviewPrisma,
+    User as UserPrisma,
+} from '@prisma/client';
 
 export class Recipe {
-    id?: number;
-    name: string;
-    description: string;
-    recipeIngredients: RecipeIngredient[];
-    creator?: User;
-    reviews?: Review[];
+    readonly id?: number;
+    readonly name: string;
+    readonly description: string;
+    readonly reviews?: Review[];
+    // readonly recipeIngredients?: RecipeIngredient[];
 
     constructor(data: {
         id?: number;
         name: string;
         description: string;
-        recipeIngredients: RecipeIngredient[];
-        creator?: User;
         reviews?: Review[];
+        // recipeIngredients?: RecipeIngredient[];
     }) {
         this.id = data.id;
         this.name = data.name;
         this.description = data.description;
-        this.recipeIngredients = data.recipeIngredients || [];
-        this.creator = data.creator;
-        this.reviews = data.reviews || [];
+        this.reviews = data.reviews;
+        // this.recipeIngredients = data.recipeIngredients;
     }
 
-    validate() {
-        if (!this.name) {
-            throw new Error('Recipe name is required');
-        }
-        if (this.name.length < 3) {
-            throw new Error('Recipe name needs to be at least 3 characters long');
-        }
-        if (!this.description) {
-            throw new Error('Description is required');
-        }
-        this.recipeIngredients.forEach((ingredient) => {
-            if (!ingredient.amount) {
-                throw new Error('Ingredient amount is required');
-            }
-            if (!ingredient.measurementType) {
-                throw new Error('Ingredient measurement type is required');
-            }
-        });
-    }
-
-    equals(recipe: Recipe): boolean {
-        return this.name === recipe.name && this.description === recipe.description;
-    }
-
-    static from = (recipePrisma: any): Recipe => {
-        // Temporarily set type to `any` for debugging
+    static from = ({
+        id,
+        name,
+        description,
+        // recipeIngredients,
+        reviews,
+    }: RecipePrisma & {
+        // recipeIngredients: RecipeIngredientPrisma[];
+        reviews: ReviewPrisma[];
+    }): Recipe => {
         return new Recipe({
-            id: recipePrisma.id,
-            name: recipePrisma.name,
-            description: recipePrisma.description,
-            recipeIngredients: recipePrisma.ingredients, // Adjust to correct field
-            creator: recipePrisma.creator,
-            reviews: recipePrisma.reviews,
+            id,
+            name,
+            description,
+            // recipeIngredients: recipeIngredients.map((ri) => RecipeIngredient.from(ri)),
+            reviews: reviews.map((review) => Review.from(review)),
         });
     };
 }
