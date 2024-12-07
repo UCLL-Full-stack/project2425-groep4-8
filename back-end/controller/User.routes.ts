@@ -36,6 +36,8 @@ const userRouter = express.Router();
  * @swagger
  * /users:
  *   get:
+ *     security:
+ *      - bearerAuth: []
  *     summary: Get all users
  *     tags: [Users]
  *     responses:
@@ -63,6 +65,8 @@ userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
  * @swagger
  * /users/{id}:
  *   get:
+ *     security:
+ *      - bearerAuth: []
  *     summary: Get a user by ID
  *     tags: [Users]
  *     parameters:
@@ -101,6 +105,8 @@ userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
  * @swagger
  * /users/email/{email}:
  *   get:
+ *     security:
+ *      - bearerAuth: []
  *     summary: Get a user by email
  *     tags: [Users]
  *     parameters:
@@ -139,6 +145,8 @@ userRouter.get('/email/:email', async (req: Request, res: Response, next: NextFu
  * @swagger
  * /users/username/{username}:
  *   get:
+ *     security:
+ *      - bearerAuth: []
  *     summary: Get a user by username
  *     tags: [Users]
  *     parameters:
@@ -224,10 +232,10 @@ userRouter.post('/signup', async (req: Request, res: Response, next: NextFunctio
  *             properties:
  *               username:
  *                 type: string
- *                 example: "john_doe"
+ *                 example: "chefjohn"
  *               password:
  *                 type: string
- *                 example: "securePassword123"
+ *                 example: "chef123"
  *     responses:
  *       200:
  *         description: Authentication successful, returns user data
