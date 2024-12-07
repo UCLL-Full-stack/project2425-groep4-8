@@ -5,7 +5,6 @@ import RecipeService from "../../services/RecipeService";
 import { Recipe } from "../../types";
 import Head from "next/head";
 import Header from "@/components/header";
-import styles from "../../styles/Home.module.css";
 
 const Recipes: React.FC = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -35,30 +34,39 @@ const Recipes: React.FC = () => {
         <title>Recipes</title>
       </Head>
       <Header />
-      <main className={styles.mainContainer}>
-        <h1 className={styles.title}>Recipes</h1>
-        <section>
-          <h2 className={styles.sectionTitle}>Recipes Overview</h2>
-        </section>
-        {recipes.length > 0 ? (
-          <RecipeOverviewTable
-            recipes={recipes}
-            selectRecipe={setSelectedRecipe}
-          />
-        ) : (
-          <p className={styles.noRecipes}>No recipes available</p>
-        )}
-        {selectedRecipe && (
-          <>
-            <h2 className={styles.recipeDetailsTitle}>
-              Details for {selectedRecipe.name}
+      <main className="min-h-screen bg-gradient-to-r px-6 py-10">
+        <div className="max-w-4xl mx-auto">
+          {/* Page Title */}
+          <h1 className="text-4xl font-bold text-center mb-8">Recipes</h1>
+
+          {/* Recipes Overview Section */}
+          <section className="mb-12">
+            <h2 className="text-2xl font-semibold mb-6 text-center">
+              Recipes Overview
             </h2>
-            <RecipeDetails
-              recipe={selectedRecipe}
-              onClose={closeRecipeDetails}
-            />
-          </>
-        )}
+            {recipes.length > 0 ? (
+              <RecipeOverviewTable
+                recipes={recipes}
+                selectRecipe={setSelectedRecipe}
+              />
+            ) : (
+              <p className="text-center text-gray-300">No recipes available</p>
+            )}
+          </section>
+
+          {/* Recipe Details Section */}
+          {selectedRecipe && (
+            <section className="bg-gray-700 rounded-lg p-6 shadow-lg">
+              <h2 className="text-xl font-semibold mb-4">
+                Details for {selectedRecipe.name}
+              </h2>
+              <RecipeDetails
+                recipe={selectedRecipe}
+                onClose={closeRecipeDetails}
+              />
+            </section>
+          )}
+        </div>
       </main>
     </>
   );

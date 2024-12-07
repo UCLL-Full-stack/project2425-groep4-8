@@ -1,51 +1,28 @@
 import UserDb from '../repository/User.db';
 import { User } from '../model/User';
 import bcrypt from 'bcrypt';
+import { AuthenticationRespone, UserInput } from '../types';
+import { generateJwtToken } from '../util/jwt';
 
-const getAllUsers = (): User[] => {
+const getAllUsers = async (): Promise<User[]> => {
     return UserDb.getAllUsers();
 };
 
-const getUserById = (id: number): User => {
+const getUserById = async (id: number): Promise<User | null> => {
     return UserDb.getUserById(id);
 };
 
-const getUserByEmail = (email: string): User => {
-    const user = UserDb.getUserByEmail(email);
-    if (!user) {
-        throw new Error('User not found');
-    }
-    return user;
+const getUserByEmail = async (email: string): Promise<User | null> => {
+    return UserDb.getUserByEmail(email);
 };
 
-const getUserByUsername = (username: string): User => {
-    const user = UserDb.getUserByUsername(username);
-    if (!user) {
-        throw new Error('User not found');
-    }
-    return user;
+const getUserByUsername = async (username: string): Promise<User> => {
+    return UserDb.getUserByUsername(username);
 };
 
-const createUser = async (user: User): Promise<User> => {
-    // Check if the email already exists
-    const existingUserByEmail = await UserDb.getUserByEmail(user.email);
-    if (existingUserByEmail) {
-        throw new Error('Email already exists');
-    }
-
-    // Check if the username already exists
-    const existingUserByUsername = await UserDb.getUserByUsername(user.username);
-    if (existingUserByUsername) {
-        throw new Error('Username already exists');
-    }
-
-    // Ensure the password is provided
-    if (!user.password) {
-        throw new Error('Password is required');
-    }
-
+const createUser = async (user: UserInput): Promise<User> => {
     // Hash the password
-    const hashedPassword = bcrypt.hashSync(user.password, 10);
+    const hashedPassword = await bcrypt.hash(user.password, 10);
 
     // Create the new user object with the hashed password
     const newUser = new User({
@@ -54,12 +31,28 @@ const createUser = async (user: User): Promise<User> => {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
-        recipes: user.recipes,
-        reviews: user.reviews
+        role: user.role,
+        recipes: [],
+        reviews: [],
     });
 
     // Save the new user to the database
     return UserDb.createUser(newUser);
+};
+
+const authenticate = async ({ username, password }: UserInput): Promise<AuthenticationRespone> => {
+    const user = await getUserByUsername(username);
+
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+        throw new Error('Incorrect password');
+    }
+
+    return {
+        token: generateJwtToken({ username, role: user.role }),
+        username,
+        fullname: `${user.firstName} ${user.lastName}`,
+    };
 };
 
 export default {
@@ -68,4 +61,5 @@ export default {
     getUserByEmail,
     getUserByUsername,
     createUser,
+    authenticate,
 };

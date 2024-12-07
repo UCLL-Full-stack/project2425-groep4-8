@@ -1,75 +1,46 @@
-import { RecipeIngredient } from "@prisma/client";
+import { RecipeIngredient } from '@prisma/client';
 
-type Ingredient = {
+type Role = 'admin' | 'chef' | 'user';
+
+type IngredientInput = {
     id?: number;
     name: string;
     category: string;
 };
 
-type IngredientInput = {
-    name: string;
-    category: string;
-};
-
-type Recipe = {
+type RecipeInput = {
     id?: number;
     name: string;
     description: string;
     ingredients: RecipeIngredient[];
-    creator: User; 
-    reviews: Review[]; 
-};
-
-type RecipeInput = {
-    name: string;
-    description: string;
-    ingredients: IngredientInput[];
-    creator: User;
-    reviews: Review[];
-};
-
-type Review = {
-    id?: number;
-    writer: User;
-    text: string;
-    score: number;
-    recipe: Recipe;
+    creator: UserInput;
+    reviews: ReviewInput[];
 };
 
 type ReviewInput = {
-    writer: User;
+    id?: number;
+    writer: UserInput;
     text: string;
     score: number;
-    recipe: Recipe;
-};
-
-type User = {
-    id?: number;
-    username: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    recipes?: Recipe[];
-    reviews?: Review[];
-    // Geen wachtwoord hier voor security reasons
+    recipe: RecipeInput;
 };
 
 type UserInput = {
+    id?: number;
     username: string;
     email: string;
     password: string;
     firstName: string;
     lastName: string;
+    role: Role;
+    recipes?: RecipeInput[];
+    reviews?: ReviewInput[];
 };
 
-// Exporting all types
-export {
-    User,
-    UserInput,
-    Recipe,
-    RecipeInput,
-    Review,
-    ReviewInput,
-    Ingredient,
-    IngredientInput
+type AuthenticationRespone = {
+    token: string;
+    username: string;
+    fullname: string;
 };
+
+export { UserInput, RecipeInput, ReviewInput, IngredientInput, AuthenticationRespone, Role };

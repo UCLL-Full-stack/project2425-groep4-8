@@ -1,61 +1,57 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-    id        Int       @id @default(autoincrement())
-    username  String    @unique
-    password  String
-    email     String    @unique
-    firstName String?
-    lastName  String?
-        // relationship fields
-    recipes   Recipe[]  @relation("UserRecipes")
-    reviews   Review[]  @relation("UserReviews")
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  email     String   @unique
+  firstName String
+  lastName  String
+  role      String   @default("user")
+  reviews   Review[]
+  recipes   Recipe[]
 }
 
 model Recipe {
-  id            Int                @id @default(autoincrement())
-  name          String
-  description   String
-       // relationship fields
-  ingredients   RecipeIngredient[]
-  creator       User               @relation("UserRecipes", fields: [creatorId], references: [id])
-  creatorId     Int
-  reviews       Review[]
+  id          Int                @id @default(autoincrement())
+  name        String
+  description String
+  ingredients RecipeIngredient[]
+  reviews     Review[]
+  user        User               @relation(fields: [userId], references: [id])
+  userId      Int
 }
 
 model Ingredient {
-  id            Int                @id @default(autoincrement())
-  name          String
-  category      String
-  recipes       RecipeIngredient[]
+  id       Int                @id @default(autoincrement())
+  name     String
+  category String
+  recipes  RecipeIngredient[]
 }
 
-// tabel between recipe and ingredient to store the amount & measurementType of each ingredient in each recipe
-model RecipeIngredient { 
-  id              Int         @id @default(autoincrement())
-  amount          Float       // this is a flaot because we want to allow half or a quarter of a unit
-  measurementType String      // for example: "tbsp", "tsp", "ml", "g", "kg"
-    // relationship fields
-  recipe          Recipe      @relation(fields: [recipeId], references: [id])
+model RecipeIngredient {
+  id              Int        @id @default(autoincrement())
+  amount          Float
+  measurementType String
+  recipe          Recipe     @relation(fields: [recipeId], references: [id])
   recipeId        Int
-  ingredient      Ingredient  @relation(fields: [ingredientId], references: [id])
+  ingredient      Ingredient @relation(fields: [ingredientId], references: [id])
   ingredientId    Int
 }
 
 model Review {
-  id              Int       @id @default(autoincrement())
-  text            String
-  score           Int
-    // relationship fields
-  writer          User      @relation("UserReviews", fields: [writerId], references: [id])
-  writerId        Int
-  recipe          Recipe    @relation(fields: [recipeId], references: [id])
-  recipeId        Int
+  id       Int    @id @default(autoincrement())
+  text     String
+  score    Int
+  recipe   Recipe @relation(fields: [recipeId], references: [id])
+  recipeId Int
+  user     User   @relation(fields: [userId], references: [id])
+  userId   Int
 }

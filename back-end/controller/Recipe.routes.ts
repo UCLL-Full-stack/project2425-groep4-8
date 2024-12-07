@@ -127,10 +127,17 @@ recipeRouter.get('/:id', async (req: Request, res: Response, next: NextFunction)
 
 /**
  * @swagger
- * /recipes:
+ * /recipes/{userId}:
  *   post:
- *     summary: Create a new recipe
+ *     summary: Create a new recipe for a specific user
  *     tags: [Recipes]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: The ID of the user creating the recipe
+ *         schema:
+ *           type: integer
  *     requestBody:
  *       required: true
  *       content:
@@ -138,9 +145,6 @@ recipeRouter.get('/:id', async (req: Request, res: Response, next: NextFunction)
  *           schema:
  *             type: object
  *             properties:
- *               id:
- *                 type: integer
- *                 example: 2
  *               name:
  *                 type: string
  *                 example: "Spaghetti Bolognese"
@@ -161,29 +165,6 @@ recipeRouter.get('/:id', async (req: Request, res: Response, next: NextFunction)
  *                     ingredientId:
  *                       type: integer
  *                       example: 1
- *               creator:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                     example: 1
- *                   name:
- *                     type: string
- *                     example: "Chef Luigi"
- *               reviews:
- *                 type: array
- *                 items:
- *                   type: object
- *                   properties:
- *                     id:
- *                       type: integer
- *                       example: 1
- *                     content:
- *                       type: string
- *                       example: "Delicious!"
- *                     rating:
- *                       type: integer
- *                       example: 5
  *             required:
  *               - name
  *               - description
@@ -197,13 +178,17 @@ recipeRouter.get('/:id', async (req: Request, res: Response, next: NextFunction)
  *               $ref: '#/components/schemas/Recipe'
  *       400:
  *         description: Bad request
+ *       404:
+ *         description: User not found
  *       500:
  *         description: Internal server error
  */
-recipeRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
+recipeRouter.post('/:userId', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const recipe = req.body as Recipe;
-        const newRecipe = await RecipeService.createRecipe(recipe);
+        const userId = parseInt(req.params.userId);
+        console.log(userId);
+        const newRecipe = await RecipeService.createRecipe(recipe, userId);
         res.status(201).json(newRecipe);
     } catch (error) {
         next(error);

@@ -92,10 +92,23 @@ reviewRouter.get('/:id', async (req: Request, res: Response, next: NextFunction)
 
 /**
  * @swagger
- * /reviews:
+ * /reviews/{userId}/{recipeId}:
  *   post:
- *     summary: Create a new review
+ *     summary: Create a new review for a specific user and recipe
  *     tags: [Reviews]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: The ID of the user creating the review
+ *         schema:
+ *           type: integer
+ *       - in: path
+ *         name: recipeId
+ *         required: true
+ *         description: The ID of the recipe being reviewed
+ *         schema:
+ *           type: integer
  *     requestBody:
  *       required: true
  *       content:
@@ -109,20 +122,9 @@ reviewRouter.get('/:id', async (req: Request, res: Response, next: NextFunction)
  *               score:
  *                 type: integer
  *                 example: 5
- *               writer:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: integer
- *                     example: 1
- *                   name:
- *                     type: string
- *                     example: "John Doe"
  *             required:
  *               - text
  *               - score
- *               - recipe
- *               - writer
  *     responses:
  *       201:
  *         description: Review created successfully
@@ -132,13 +134,18 @@ reviewRouter.get('/:id', async (req: Request, res: Response, next: NextFunction)
  *               $ref: '#/components/schemas/Review'
  *       400:
  *         description: Bad request
+ *       404:
+ *         description: User or Recipe not found
  *       500:
  *         description: Internal server error
  */
-reviewRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
+reviewRouter.post('/:userId/:recipeId', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const review = req.body as Review;
-        const newReview = await ReviewService.createReview(review);
+        const userId = parseInt(req.params.userId);
+        const recipeId = parseInt(req.params.recipeId);
+        console.log(userId, recipeId);
+        const newReview = await ReviewService.createReview(review, userId, recipeId);
         res.status(201).json(newReview);
     } catch (error) {
         next(error);

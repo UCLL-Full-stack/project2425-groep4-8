@@ -1,4 +1,4 @@
-import IngredientService from '../../service/Ingredient.service'; // Adjust the path as needed
+import IngredientService from '../../service/Ingredient.service';
 import IngredientDb from '../../repository/Ingredient.db';
 import { Ingredient } from '../../model/Ingredient';
 

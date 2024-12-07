@@ -1,12 +1,12 @@
 import Head from "next/head";
 import Image from "next/image";
-import styles from "@/styles/Home.module.css";
 import Header from "@/components/header";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <>
-      <Header></Header>
+      <Header />
       <Head>
         <title>TasteBuddy</title>
         <meta
@@ -15,12 +15,23 @@ export default function Home() {
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <main className={styles.main}>
-        <h1>Welkom bij TasteBuddy!</h1>
-        <p>
-          Deel jouw favoriete recepten en ontdek nieuwe gerechten van andere
-          kookliefhebbers.
-        </p>
+
+      <main className="flex items-center justify-center min-h-screen bg-green-800 relative overflow-hidden">
+        <div className="absolute inset-0 bg-opacity-60 flex flex-col items-center justify-center text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white tracking-wide">
+            Welkom bij TasteBuddy!
+          </h1>
+          <p className="text-lg md:text-xl mb-8 text-gray-200">
+            Deel jouw favoriete recepten en ontdek nieuwe gerechten van andere
+            kookliefhebbers.
+          </p>
+          <Link
+            href="/recipes"
+            className="bg-gray-800 text-white font-medium py-3 px-6 rounded-lg shadow-lg hover:bg-gray-700 transition duration-300 ease-in-out"
+          >
+            Ontdek Recepten
+          </Link>
+        </div>
       </main>
     </>
   );

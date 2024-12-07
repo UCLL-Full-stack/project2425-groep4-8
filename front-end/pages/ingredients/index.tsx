@@ -1,18 +1,21 @@
-import Header from "../../components/header";
+import React, { useEffect, useState } from "react";
 import IngredientOverviewTable from "../../components/ingredients/IngredientOverviewTable";
 import IngredientService from "../../services/IngredientService";
 import { Ingredient } from "../../types";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import Header from "@/components/header";
 
 const Ingredients: React.FC = () => {
-  const [ingredients, setIngredient] = useState<Array<Ingredient>>([]);
+  const [ingredients, setIngredient] = useState<Ingredient[]>([]);
 
   const getIngredients = async () => {
-    const response = await IngredientService.getAllIngredients();
-    const data = await response.json();
-    console.log(data);
-    setIngredient(data);
+    try {
+      const response = await IngredientService.getAllIngredients();
+      const data = await response.json();
+      setIngredient(data);
+    } catch (error) {
+      console.error("Failed to fetch ingredients", error);
+    }
   };
 
   useEffect(() => {
@@ -25,18 +28,25 @@ const Ingredients: React.FC = () => {
         <title>Ingredients</title>
       </Head>
       <Header />
-      <main className="d-flex flex-column justify-content-center align-items-center">
-        <h1>ingredients</h1>
-        <section>
-          <h2>ingredients overview</h2>
-        </section>
-        {ingredients.length > 0 ? (
-          <IngredientOverviewTable ingredients={ingredients} />
-        ) : (
-          <p>No ingredients available</p>
-        )}
+      <main className="min-h-screen bg-gradient-to-r px-6 py-10">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-4xl font-bold text-center mb-8">Ingredients</h1>
+          <section className="mb-12">
+            <h2 className="text-2xl font-semibold mb-6 text-center">
+              Ingredients Overview
+            </h2>
+            {ingredients.length > 0 ? (
+              <IngredientOverviewTable ingredients={ingredients} />
+            ) : (
+              <p className="text-center text-gray-300">
+                No ingredients available
+              </p>
+            )}
+          </section>
+        </div>
       </main>
     </>
   );
 };
+
 export default Ingredients;
