@@ -64,6 +64,8 @@ const recipeRouter = express.Router();
  * @swagger
  * /recipes:
  *   get:
+ *     security:
+ *      - bearerAuth: []
  *     summary: Get all recipes
  *     tags: [Recipes]
  *     responses:
@@ -91,6 +93,8 @@ recipeRouter.get('/', async (req: Request, res: Response, next: NextFunction) =>
  * @swagger
  * /recipes/{id}:
  *   get:
+ *     security:
+ *      - bearerAuth: []
  *     summary: Get a recipe by ID
  *     tags: [Recipes]
  *     parameters:
@@ -129,6 +133,8 @@ recipeRouter.get('/:id', async (req: Request, res: Response, next: NextFunction)
  * @swagger
  * /recipes/{userId}:
  *   post:
+ *     security:
+ *      - bearerAuth: []
  *     summary: Create a new recipe for a specific user
  *     tags: [Recipes]
  *     parameters:

@@ -29,6 +29,8 @@ const reviewRouter = express.Router();
  * @swagger
  * /reviews:
  *   get:
+ *     security:
+ *      - bearerAuth: []
  *     summary: Get all reviews
  *     tags: [Reviews]
  *     responses:
@@ -56,6 +58,8 @@ reviewRouter.get('/', async (req: Request, res: Response, next: NextFunction) =>
  * @swagger
  * /reviews/{id}:
  *   get:
+ *     security:
+ *      - bearerAuth: []
  *     summary: Get a review by ID
  *     tags: [Reviews]
  *     parameters:
@@ -94,6 +98,8 @@ reviewRouter.get('/:id', async (req: Request, res: Response, next: NextFunction)
  * @swagger
  * /reviews/{userId}/{recipeId}:
  *   post:
+ *     security:
+ *      - bearerAuth: []
  *     summary: Create a new review for a specific user and recipe
  *     tags: [Reviews]
  *     parameters:
