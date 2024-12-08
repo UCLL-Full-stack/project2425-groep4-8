@@ -7,10 +7,18 @@ import Header from "@/components/header";
 
 const Users: React.FC = () => {
   const [users, setUser] = useState<User[]>([]);
+  const [error, setError] = useState<String>();
 
   const getUsers = async () => {
     try {
       const response = await Userservice.getAllUsers();
+      if (!response.ok) {
+        if (response.status === 401) {
+          setError("You are not authorized to view this page.");
+        } else {
+          setError(response.statusText);
+        }
+      }
       const data = await response.json();
       setUser(data);
     } catch (error) {

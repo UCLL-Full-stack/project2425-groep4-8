@@ -4,6 +4,8 @@ import Header from "@/components/header";
 import Link from "next/link";
 
 export default function Home() {
+  const loggedInUser = sessionStorage.getItem("loggedInUser");
+
   return (
     <>
       <Header />
@@ -25,12 +27,14 @@ export default function Home() {
             Deel jouw favoriete recepten en ontdek nieuwe gerechten van andere
             kookliefhebbers.
           </p>
-          <Link
-            href="/recipes"
-            className="bg-gray-800 text-white font-medium py-3 px-6 rounded-lg shadow-lg hover:bg-gray-700 transition duration-300 ease-in-out"
-          >
-            Ontdek Recepten
-          </Link>
+          {loggedInUser && (
+            <Link
+              href="/recipes"
+              className="bg-gray-800 text-white font-medium py-3 px-6 rounded-lg shadow-lg hover:bg-gray-700 transition duration-300 ease-in-out"
+            >
+              Ontdek Recepten
+            </Link>
+          )}
         </div>
       </main>
     </>

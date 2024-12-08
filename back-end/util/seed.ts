@@ -43,6 +43,7 @@ const main = async () => {
             email: 'admin@cookingapp.com',
             firstName: 'Admin',
             lastName: 'User',
+            role: 'admin',
         },
     });
 
@@ -53,6 +54,7 @@ const main = async () => {
             email: 'chefjohn@cookingapp.com',
             firstName: 'John',
             lastName: 'Doe',
+            role: 'chef',
         },
     });
 
@@ -63,6 +65,7 @@ const main = async () => {
             email: 'jane@reviews.com',
             firstName: 'Jane',
             lastName: 'Smith',
+            role: 'user',
         },
     });
 
