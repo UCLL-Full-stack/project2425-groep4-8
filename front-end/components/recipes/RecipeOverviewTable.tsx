@@ -1,6 +1,7 @@
 import React from "react";
 import { Recipe } from "../../types";
 import styles from "../../styles/Home.module.css";
+import { useTranslation } from "next-i18next";
 
 type Props = {
   recipes: Recipe[];
@@ -8,13 +9,15 @@ type Props = {
 };
 
 const RecipeOverviewTable: React.FC<Props> = ({ recipes, selectRecipe }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.tableContainer}>
       <table className={styles.recipeTable}>
         <thead>
           <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Description</th>
+            <th scope="col">{t("pages.recipe.name")}</th>
+            <th scope="col">{t("pages.recipe.description")}</th>
           </tr>
         </thead>
         <tbody>
@@ -22,7 +25,7 @@ const RecipeOverviewTable: React.FC<Props> = ({ recipes, selectRecipe }) => {
             <tr
               key={index}
               onClick={() => selectRecipe(recipe)}
-              className={styles.tableRow} 
+              className={styles.tableRow}
             >
               <td>{recipe.name}</td>
               <td>{recipe.description}</td>

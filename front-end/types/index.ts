@@ -23,10 +23,17 @@ export type Review = {
 
 export type User = {
   id?: number;
-  username: string;
-  email: string;
-  firstName: string;
-  lastName: string;
+  username?: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  password?: string;
   recipes?: Recipe[];
   reviews?: Review[];
+  role?: string;
+};
+
+export type StatusMessage = {
+  message: string;
+  type: "error" | "success";
 };

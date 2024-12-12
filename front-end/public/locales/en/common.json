@@ -1,0 +1,46 @@
+{
+  "home": {
+    "users": "Users",
+    "reviews": "Reviews",
+    "recipes": "Recipes",
+    "ingredients": "Ingredients",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "overview": {
+    "users": "Users Overview",
+    "reviews": "Reviews Overview",
+    "recipes": "Recipes Overview",
+    "ingredients": "Ingredients Overview"
+  },
+  "pages": {
+    "user": {
+      "users": "Users",
+      "firstname": "Firstname",
+      "lastname": "Lastname",
+      "not": "No users available"
+    },
+    "review": {
+      "reviews": "Reviews",
+      "score": "Score",
+      "text": "Text",
+      "not": "No reviews available"
+    },
+    "recipe": {
+      "recipes": "Recipes",
+      "name": "Name",
+      "description": "Description",
+      "not": "No recipes available"
+    },
+    "ingredient": {
+      "ingredients": "Ingredients",
+      "name": "Name",
+      "category": "Category",
+      "not": "No ingredients available"
+    },
+    "home": {
+      "welcome": "Welcome by TasteBuddy!",
+      "share": "Share your favourite recipes and find new ingredients with other cooking lovers."
+    }
+  }
+}

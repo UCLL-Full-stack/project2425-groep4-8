@@ -2,47 +2,32 @@ import { User } from '../../model/User';
 import { Recipe } from '../../model/Recipe';
 import { Review } from '../../model/Review';
 
-let mockRecipe: Recipe;
-let mockReview: Review;
-
-beforeEach(() => {
-    // Mock Recipe
-    mockRecipe = {
-        id: 1,
-        name: 'Mock Recipe',
-        description: 'Mock description',
-        recipeIngredients: [
-            { id: 1, amount: 2, measurementType: 'cups', recipeId: 1, ingredientId: 1 },
-            { id: 2, amount: 1, measurementType: 'tablespoon', recipeId: 1, ingredientId: 2 },
-        ],
-        creator: {} as User,
-        reviews: [],
-        validate: jest.fn().mockReturnValue(true),
-        equals: jest.fn().mockReturnValue(true),
-    };
-
-    // Mock Review
-    mockReview = {
-        id: 1,
-        writer: {} as User,
-        text: 'Mock Review',
-        score: 5,
-        recipe: mockRecipe,
-        validate: jest.fn().mockReturnValue(true),
-        equals: jest.fn().mockReturnValue(true),
-    };
+const mockRecipe = new Recipe({
+    id: 1,
+    name: 'Mock Recipe',
+    description: 'Mock description',
+    reviews: [],
 });
 
-test('given valid user data, when a User is created, then properties are correctly assigned', () => {
-    const username = 'testuser';
-    const password = 'password123';
-    const email = 'test@example.com';
-    const firstName = 'Test';
-    const lastName = 'User';
+const mockReview = new Review({
+    id: 1,
+    text: 'Mock Review',
+    score: 5,
+});
+
+// Tests
+
+test('given: valid user data; when: User is created; then: properties are correctly assigned', () => {
+    const username = 'JulieCanCook';
+    const password = 'I<3Cooking4Ever';
+    const email = 'thecookjulie@gmail.com';
+    const firstName = 'Julie';
+    const lastName = 'Lanssens';
+    const role = 'user';
     const recipes = [mockRecipe];
     const reviews = [mockReview];
 
-    const user = new User({ username, password, email, firstName, lastName, recipes, reviews });
+    const user = new User({ username, password, email, firstName, lastName, role, recipes, reviews });
 
     expect(user.username).toBe(username);
     expect(user.password).toBe(password);
@@ -54,65 +39,24 @@ test('given valid user data, when a User is created, then properties are correct
 });
 
 test('given an invalid username, when a User is created, then an error is thrown', () => {
-    expect(
-        () =>
-            new User({
-                username: '',
-                password: 'password123',
-                email: 'test@example.com',
-                firstName: 'test',
-                lastName: 'test',
-            })
-    ).toThrow('Username is required');
-    expect(
-        () =>
-            new User({
-                username: 'ab',
-                password: 'password123',
-                email: 'test@example.com',
-                firstName: 'test',
-                lastName: 'test',
-            })
-    ).toThrow('Username must be at least 3 characters long');
+    const role = 'user';
+    expect(() => new User({ username: '', password: 'password123', email: 'test@example.com', firstName: 'test', lastName: 'test', role })).toThrow('Username is required');
+    expect(() => new User({ username: 'ab', password: 'password123', email: 'test@example.com', firstName: 'test', lastName: 'test', role })).toThrow('Username must be at least 3 characters long');
 });
 
 test('given an invalid password, when a User is created, then an error is thrown', () => {
-    expect(
-        () =>
-            new User({
-                username: 'test',
-                password: '',
-                email: 'test@example.com',
-                firstName: 'test',
-                lastName: 'test',
-            })
-    ).toThrow('Password is required');
+    const role = 'user';
+    expect(() => new User({ username: 'test', password: '', email: 'test@example.com', firstName: 'test', lastName: 'test', role })).toThrow('Password is required');
 });
 
 test('given an invalid email, when a User is created, then an error is thrown', () => {
-    expect(
-        () =>
-            new User({
-                username: 'test',
-                password: 'password123',
-                email: '',
-                firstName: 'test',
-                lastName: 'test',
-            })
-    ).toThrow('Email is required');
-    expect(
-        () =>
-            new User({
-                username: 'test',
-                password: 'password123',
-                email: 'test',
-                firstName: 'test',
-                lastName: 'test',
-            })
-    ).toThrow('Invalid email format');
+    const role = 'user';
+    expect(() => new User({ username: 'test', password: 'password123', email: '', firstName: 'test', lastName: 'test', role })).toThrow('Email is required');
+    expect(() => new User({ username: 'test', password: 'password123', email: 'test', firstName: 'test', lastName: 'test', role })).toThrow('Invalid email format');
 });
 
 test('given two users with the same username and email, when compared, then equals() returns true', () => {
+    const role = 'user';
     const user1 = new User({
         username: 'test',
         password: 'password123',
@@ -121,6 +65,7 @@ test('given two users with the same username and email, when compared, then equa
         lastName: 'test',
         recipes: [mockRecipe],
         reviews: [mockReview],
+        role,
     });
     const user2 = new User({
         username: 'test',
@@ -130,12 +75,14 @@ test('given two users with the same username and email, when compared, then equa
         lastName: 'test',
         recipes: [],
         reviews: [],
+        role,
     });
 
     expect(user1.equals(user2)).toBe(true);
 });
 
 test('given two users with different usernames or emails, when compared, then equals() returns false', () => {
+    const role = 'user';
     const user1 = new User({
         username: 'test',
         password: 'password123',
@@ -144,6 +91,7 @@ test('given two users with different usernames or emails, when compared, then eq
         lastName: 'test',
         recipes: [mockRecipe],
         reviews: [mockReview],
+        role,
     });
     const user2 = new User({
         username: 'testje',
@@ -153,6 +101,7 @@ test('given two users with different usernames or emails, when compared, then eq
         lastName: 'test',
         recipes: [mockRecipe],
         reviews: [mockReview],
+        role,
     });
 
     expect(user1.equals(user2)).toBe(false);

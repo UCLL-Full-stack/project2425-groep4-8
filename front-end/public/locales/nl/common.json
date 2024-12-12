@@ -1,0 +1,46 @@
+{
+  "home": {
+    "users": "Gebruikers",
+    "reviews": "Reviews",
+    "recipes": "Recepten",
+    "ingredients": "Ingredienten",
+    "login": "Inloggen",
+    "logout": "Uitloggen"
+  },
+  "overview": {
+    "users": "Gebruikers Overview",
+    "reviews": "Reviews Overview",
+    "recipes": "Recepten Overview",
+    "ingredients": "Ingredienten Overview"
+  },
+  "pages": {
+    "user": {
+      "users": "Gebruikers",
+      "firstname": "Voornaam",
+      "lastname": "Achternaam",
+      "not": "Geen gebruikers beschikbaar"
+    },
+    "review": {
+      "reviews": "Reviews",
+      "score": "Score",
+      "text": "Tekst",
+      "not": "Geen reviews beschikbaar"
+    },
+    "recipe": {
+      "recipes": "Recepten",
+      "name": "Naam",
+      "description": "Beschrijving",
+      "not": "Geen recepten beschikbaar"
+    },
+    "ingredient": {
+      "ingredients": "Ingredienten",
+      "name": "Naam",
+      "category": "Categorie",
+      "not": "Geen ingredienten beschikbaar"
+    },
+    "home": {
+      "welcome": "Welkom bij TasteBuddy!",
+      "share": "Deel jouw favoriete recepten en ontdek nieuwe gerechten van andere kookliefhebbers."
+    }
+  }
+}

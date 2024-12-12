@@ -30,6 +30,10 @@ export class Recipe {
         // this.recipeIngredients = data.recipeIngredients;
     }
 
+    equals(recipe: Recipe): boolean {
+        return this.name === recipe.name
+    }
+
     static from = ({
         id,
         name,
