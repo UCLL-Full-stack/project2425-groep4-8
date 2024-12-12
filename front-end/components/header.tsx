@@ -1,6 +1,8 @@
 import { User } from "@/types";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Language from "./language/language";
+import { useTranslation } from "next-i18next";
 
 const Header: React.FC = () => {
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
@@ -20,6 +22,8 @@ const Header: React.FC = () => {
     setLoggedInUser(null);
   };
 
+  const { t } = useTranslation();
+
   return (
     <header className="py-4 bg-gradient-to-r from-gray-800 to-gray-600 shadow-md bg-black">
       <nav className="flex justify-center gap-6">
@@ -34,21 +38,21 @@ const Header: React.FC = () => {
             href="/ingredients"
             className="text-gray-100 uppercase font-medium tracking-wide px-4 py-2 rounded-lg transition-all duration-300 ease-in-out hover:bg-slate-800"
           >
-            Ingredients
+            {t("home.ingredients")}
           </Link>
         )}
         <Link
           href="/recipes"
           className="text-gray-100 uppercase font-medium tracking-wide px-4 py-2 rounded-lg transition-all duration-300 ease-in-out  hover:bg-slate-800"
         >
-          Recipes
+          {t("home.recipes")}
         </Link>
         {loggedInUser && (
           <Link
             href="/reviews"
             className="text-gray-100 uppercase font-medium tracking-wide px-4 py-2 rounded-lg transition-all duration-300 ease-in-out hover:bg-slate-800"
           >
-            Reviews
+            {t("home.reviews")}
           </Link>
         )}
         {loggedInUser && loggedInUser.role === "admin" && (
@@ -56,7 +60,7 @@ const Header: React.FC = () => {
             href="/users"
             className="text-gray-100 uppercase font-medium tracking-wide px-4 py-2 rounded-lg transition-all duration-300 ease-in-out  hover:bg-slate-800"
           >
-            Users
+            {t("home.users")}
           </Link>
         )}
         {!loggedInUser && (
@@ -64,7 +68,7 @@ const Header: React.FC = () => {
             href="/login"
             className="text-gray-100 uppercase font-medium tracking-wide px-4 py-2 rounded-lg transition-all duration-300 ease-in-out  hover:bg-slate-800"
           >
-            Login
+            {t("home.login")}
           </Link>
         )}
         {loggedInUser && (
@@ -73,9 +77,10 @@ const Header: React.FC = () => {
             className="text-gray-100 uppercase font-medium tracking-wide px-4 py-2 rounded-lg transition-all duration-300 ease-in-out  hover:bg-slate-800"
             onClick={handleClick}
           >
-            Logout
+            {t("home.logout")}
           </Link>
         )}
+        <Language></Language>
       </nav>
     </header>
   );

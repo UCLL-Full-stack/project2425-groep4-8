@@ -1,6 +1,7 @@
 import UserService from "@/services/UserService";
 import { StatusMessage } from "@/types";
 import classNames from "classnames";
+import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
@@ -74,6 +75,8 @@ const UserLoginForm: React.FC = () => {
       router.push("/");
     }, 2000);
   };
+
+  const { t } = useTranslation();
 
   return (
     <>
