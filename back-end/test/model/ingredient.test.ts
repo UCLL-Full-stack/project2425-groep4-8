@@ -1,21 +1,25 @@
 import { Ingredient } from '../../model/Ingredient';
 
 const mockIngredient = new Ingredient({
+    id: 1,
     name: 'Sugar',
     category: 'Sweetener'
 });
 
 const mockIngredient2 = new Ingredient({
+    id: 2,
     name: 'Salt',
     category: 'Spice'
 });
 
 const invalidIngredientData = new Ingredient({ 
+    id: 3,
     name: '',
     category: 'Sweetener' 
 });
 
 const invalidIngredientData2 = new Ingredient({ 
+    id: 4,
     name: 'Salt',
     category: '' 
 });
@@ -48,3 +52,4 @@ test('given: missing ingredient name; when: validated; then: it throws an error'
 test('given: missing ingredient category; when: validated; then: it throws an error', () => {
     expect(() => new Ingredient(invalidIngredientData2)).toThrow("Ingredient category is required");
 });
+
