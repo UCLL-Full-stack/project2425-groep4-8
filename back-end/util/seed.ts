@@ -1,5 +1,3 @@
-// Execute: npx ts-node util/seed.ts
-
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 
@@ -7,13 +5,12 @@ const prisma = new PrismaClient();
 
 const main = async () => {
     // Cleanup
-    await prisma.recipeIngredient.deleteMany();
     await prisma.review.deleteMany();
     await prisma.recipe.deleteMany();
     await prisma.ingredient.deleteMany();
     await prisma.user.deleteMany();
 
-    // Create Ingredients
+    // Create Ingredients (with ID, name, and category)
     const flour = await prisma.ingredient.create({
         data: {
             name: 'Flour',
@@ -69,12 +66,19 @@ const main = async () => {
         },
     });
 
-    // Create Recipes
+    // Create Recipes and link Ingredients by ID
     const pancakeRecipe = await prisma.recipe.create({
         data: {
             name: 'Pancakes',
             description: 'Fluffy homemade pancakes',
             userId: chef.id,
+            ingredients: {
+                connect: [
+                    { id: flour.id }, // Link ingredient by ID
+                    { id: sugar.id },
+                    { id: egg.id },
+                ],
+            },
         },
     });
 
@@ -83,52 +87,9 @@ const main = async () => {
             name: 'Vanilla Cake',
             description: 'Classic vanilla-flavored cake',
             userId: chef.id,
-        },
-    });
-
-    // Create RecipeIngredients
-    await prisma.recipeIngredient.createMany({
-        data: [
-            {
-                recipeId: pancakeRecipe.id,
-                ingredientId: flour.id,
-                amount: 200,
-                measurementType: 'grams',
+            ingredients: {
+                connect: [{ id: flour.id }, { id: sugar.id }, { id: egg.id }],
             },
-            {
-                recipeId: pancakeRecipe.id,
-                ingredientId: egg.id,
-                amount: 2,
-                measurementType: 'pieces',
-            },
-            {
-                recipeId: pancakeRecipe.id,
-                ingredientId: sugar.id,
-                amount: 50,
-                measurementType: 'grams',
-            },
-            {
-                recipeId: cakeRecipe.id,
-                ingredientId: flour.id,
-                amount: 250,
-                measurementType: 'grams',
-            },
-            {
-                recipeId: cakeRecipe.id,
-                ingredientId: sugar.id,
-                amount: 100,
-                measurementType: 'grams',
-            },
-        ],
-    });
-
-    // Create Reviews
-    await prisma.review.create({
-        data: {
-            text: 'Delicious pancakes!',
-            score: 5,
-            recipeId: pancakeRecipe.id,
-            userId: reviewer.id,
         },
     });
 

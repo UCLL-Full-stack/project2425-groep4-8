@@ -2,11 +2,13 @@ import database from '../util/database';
 import { Recipe } from '../model/Recipe';
 import { User } from '../model/User';
 import { Review } from '../model/Review';
+import { Ingredient } from '../model/Ingredient';
 
 const getAllRecipes = async (): Promise<Recipe[]> => {
     const recipePrisma = await database.recipe.findMany({
         include: {
             reviews: true,
+            ingredients: true,
         },
     });
 
@@ -24,6 +26,7 @@ const getRecipeById = async (id: number): Promise<Recipe | null> => {
         },
         include: {
             reviews: true,
+            ingredients: true,
         },
     });
 
@@ -34,13 +37,19 @@ const getRecipeById = async (id: number): Promise<Recipe | null> => {
     return Recipe.from(recipePrisma);
 };
 
-const createRecipe = async ({ name, description }: Recipe, userId: number): Promise<Recipe> => {
+const createRecipe = async (
+    { name, description, ingredients }: Recipe,
+    userId: number
+): Promise<Recipe> => {
     try {
         const recipePrisma = await database.recipe.create({
             data: {
                 name,
                 description,
                 user: { connect: { id: userId } },
+                ingredients: {
+                    connect: ingredients?.map((ingredient) => ({ id: ingredient.id })),
+                },
             },
             include: {
                 ingredients: true,

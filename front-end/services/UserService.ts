@@ -29,9 +29,25 @@ const loginUser = (user: User) => {
   });
 };
 
+const getUserByUsername = (username: string) => {
+  const token = getAuthToken();
+
+  return fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/users/username/${username}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
 const UserService = {
   getAllUsers,
   loginUser,
+  getUserByUsername,
 };
 
 export default UserService;

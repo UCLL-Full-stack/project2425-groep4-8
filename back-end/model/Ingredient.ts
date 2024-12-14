@@ -1,6 +1,4 @@
-import { RecipeIngredient } from './RecipeIngredient';
 import {
-    RecipeIngredient as RecipeIngredientPrisma,
     Recipe as RecipePrisma,
     Review as ReviewPrisma,
     User as UserPrisma,
@@ -11,19 +9,12 @@ export class Ingredient {
     readonly id?: number;
     readonly name: string;
     readonly category: string;
-    // readonly recipeIngredients?: RecipeIngredient[];
 
-    constructor(ingredient: {
-        id?: number;
-        name: string;
-        category: string;
-        // recipeIngredients?: RecipeIngredient[];
-    }) {
+    constructor(ingredient: { id?: number; name: string; category: string }) {
         this.validate(ingredient);
         this.id = ingredient.id;
         this.name = ingredient.name;
         this.category = ingredient.category;
-        // this.recipeIngredients = ingredient.recipeIngredients;
     }
 
     validate(ingredient: { id?: number; name: string; category: string }) {
@@ -40,19 +31,11 @@ export class Ingredient {
         return this.name === ingredient.name && this.category === ingredient.category;
     }
 
-    static from = ({
-        id,
-        name,
-        category,
-    }: // recipeIngredients,
-    IngredientPrisma & {
-        // recipeIngredients?: RecipeIngredientPrisma[];
-    }): Ingredient => {
+    static from = ({ id, name, category }: IngredientPrisma): Ingredient => {
         return new Ingredient({
             id,
             name,
             category,
-            // recipeIngredients: recipeIngredients.map((ri) => RecipeIngredient.from(ri)),
         });
     };
 }

@@ -25,28 +25,17 @@ const recipeRouter = express.Router();
  *         description:
  *           type: string
  *           description: A brief description of the recipe.
- *         recipeIngredients:
+ *         ingredients:
  *           type: array
  *           items:
  *             type: object
  *             properties:
- *               amount:
- *                 type: number
- *                 description: The amount of the ingredient.
- *               measurementType:
+ *               name:
  *                 type: string
- *                 description: The type of measurement (e.g., grams, cups).
- *               ingredientId:
- *                 type: integer
- *                 description: The ID of the ingredient used in the recipe.
- *         creator:
- *           type: object
- *           properties:
- *             id:
- *               type: integer
- *               format: int64
- *             name:
- *               type: string
+ *                 description: The name of the ingredient.
+ *               category:
+ *                 type: string
+ *                 description: The category of the ingredient used in the recipe.
  *         reviews:
  *           type: array
  *           items:
@@ -157,24 +146,21 @@ recipeRouter.get('/:id', async (req: Request, res: Response, next: NextFunction)
  *               description:
  *                 type: string
  *                 example: "A classic Italian dish with pasta and meat sauce."
- *               recipeIngredients:
+ *               ingredients:
  *                 type: array
  *                 items:
  *                   type: object
  *                   properties:
- *                     amount:
- *                       type: number
- *                       example: 200
- *                     measurementType:
+ *                     name:
  *                       type: string
- *                       example: "grams"
- *                     ingredientId:
- *                       type: integer
- *                       example: 1
+ *                       example: Tonijn
+ *                     category:
+ *                       type: string
+ *                       example: Vis
  *             required:
  *               - name
  *               - description
- *               - recipeIngredients
+ *               - ingredients
  *     responses:
  *       201:
  *         description: Recipe created successfully

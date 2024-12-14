@@ -1,7 +1,12 @@
 import { Recipe } from './Recipe';
 import { Review } from './Review';
 import { Role } from '../types';
-import { User as UserPrisma, Recipe as RecipePrisma, Review as ReviewPrisma } from '@prisma/client';
+import {
+    User as UserPrisma,
+    Recipe as RecipePrisma,
+    Review as ReviewPrisma,
+    Ingredient as IngredientPrisma,
+} from '@prisma/client';
 
 export class User {
     readonly id?: number;
@@ -77,7 +82,9 @@ export class User {
 
     static from = (
         user: UserPrisma & {
-            recipes: (RecipePrisma & { reviews?: ReviewPrisma[] })[];
+            recipes: (RecipePrisma & { reviews?: ReviewPrisma[] } & {
+                ingredients?: IngredientPrisma[];
+            })[];
             reviews: ReviewPrisma[];
         }
     ): User => {
@@ -92,6 +99,7 @@ export class User {
             recipes: user.recipes.map((recipe) =>
                 Recipe.from({
                     ...recipe,
+                    ingredients: recipe.ingredients ?? [],
                     reviews: (recipe.reviews ?? []).map((review) => ({
                         id: review.id,
                         text: review.text,

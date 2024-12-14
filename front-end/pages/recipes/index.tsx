@@ -40,10 +40,8 @@ const Recipes: React.FC = () => {
       <Header />
       <main className="min-h-screen bg-gradient-to-r px-6 py-10">
         <div className="max-w-4xl mx-auto">
-          {/* Page Title */}
           <h1 className="text-4xl font-bold text-center mb-8">{t("pages.recipe.recipes")}</h1>
 
-          {/* Recipes Overview Section */}
           <section className="mb-12">
             <h2 className="text-2xl font-semibold mb-6 text-center">
               {t("overview.recipes")}
@@ -58,8 +56,7 @@ const Recipes: React.FC = () => {
             )}
           </section>
 
-          {/* Recipe Details Section */}
-          {selectedRecipe && (
+          {/* {selectedRecipe && (
             <section className="bg-gray-700 rounded-lg p-6 shadow-lg">
               <h2 className="text-xl font-semibold mb-4">
                 Details for {selectedRecipe.name}
@@ -69,7 +66,7 @@ const Recipes: React.FC = () => {
                 onClose={closeRecipeDetails}
               />
             </section>
-          )}
+          )} */}
         </div>
       </main>
     </>
