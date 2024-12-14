@@ -8,28 +8,68 @@ const userRouter = express.Router();
 /**
  * @swagger
  * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  *   schemas:
  *     User:
  *       type: object
  *       properties:
  *         id:
  *           type: integer
+ *           description: Unique identifier for the user.
  *           example: 2
  *         username:
  *           type: string
+ *           description: Username of the user.
  *           example: "john_doe"
  *         email:
  *           type: string
+ *           description: Email of the user.
  *           example: "john@example.com"
- *         password:
- *           type: string
- *           example: "securePassword123"
  *         firstName:
  *           type: string
+ *           description: First name of the user.
  *           example: "John"
  *         lastName:
  *           type: string
+ *           description: Last name of the user.
  *           example: "Doe"
+ *     AuthenticationRequest:
+ *       type: object
+ *       required:
+ *         - username
+ *         - password
+ *       properties:
+ *         username:
+ *           type: string
+ *           description: The username of the user.
+ *           example: "chefjohn"
+ *         password:
+ *           type: string
+ *           description: The password of the user.
+ *           example: "chef123"
+ *     AuthenticationResponse:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *           description: Response message.
+ *           example: "Authentication successful."
+ *         token:
+ *           type: string
+ *           description: JWT access token.
+ *           example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *         username:
+ *           type: string
+ *           description: Username of the authenticated user.
+ *           example: "chefjohn"
+ *         fullname:
+ *           type: string
+ *           description: Full name of the authenticated user.
+ *           example: "John Doe"
  */
 
 /**
@@ -232,10 +272,10 @@ userRouter.post('/signup', async (req: Request, res: Response, next: NextFunctio
  *             properties:
  *               username:
  *                 type: string
- *                 example: "chefjohn"
+ *                 example: "admin"
  *               password:
  *                 type: string
- *                 example: "chef123"
+ *                 example: "admin123"
  *     responses:
  *       200:
  *         description: Authentication successful, returns user data

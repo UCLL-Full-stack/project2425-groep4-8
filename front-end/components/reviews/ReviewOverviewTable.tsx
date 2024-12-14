@@ -1,20 +1,23 @@
 import React from "react";
 import { Review } from "../../types";
 import styles from "../../styles/Home.module.css";
+import { useTranslation } from "next-i18next";
 
 type Props = {
   reviews: Array<Review>;
 };
 
 const ReviewOverviewTable: React.FC<Props> = ({ reviews }: Props) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.tableContainer}>
       {reviews && (
         <table className={styles.recipeTable}>
           <thead>
             <tr>
-              <th scope="col">Score</th>
-              <th scope="col">Text</th>
+              <th scope="col">{t("pages.review.score")}</th>
+              <th scope="col">{t("pages.review.text")}</th>
             </tr>
           </thead>
           <tbody>

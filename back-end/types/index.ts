@@ -41,6 +41,7 @@ type AuthenticationRespone = {
     token: string;
     username: string;
     fullname: string;
+    role: Role;
 };
 
 export { UserInput, RecipeInput, ReviewInput, IngredientInput, AuthenticationRespone, Role };

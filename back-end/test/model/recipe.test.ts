@@ -3,108 +3,63 @@ import { Recipe } from '../../model/Recipe';
 import { Review } from '../../model/Review';
 import { RecipeIngredient } from '@prisma/client';
 
-let mockUser: User;
-let mockReview: Review;
-
-beforeEach(() => {
-    // Initialize mockUser
-    mockUser = {
-        id: 1,
-        username: 'testuser',
-        email: 'test@example.com',
-        password: 'securepassword',
-        firstName: 'Test',
-        lastName: 'User',
-        validate: jest.fn(),
-        equals: jest.fn(),
-    } as unknown as User;
-
-    // Initialize mockReview
-    mockReview = {
-        id: 1,
-        writer: mockUser,
-        text: 'Mock Review',
-        score: 5,
-        recipe: {} as Recipe,
-        validate: jest.fn().mockReturnValue(true),
-        equals: jest.fn().mockReturnValue(true),
-    };
+//I use this mockReview only to create a mock recipe. I don't use it in the tests.
+const mockReview = new Review({ 
+    id: 1,
+    text: 'Mock Review',
+    score: 5,
 });
 
-test('given valid recipe data, when a Recipe is created, then properties are correctly assigned', () => {
-    const recipeData = {
-        name: 'Spaghetti Bolognese',
-        description: 'Delicious pasta with meat sauce',
-        recipeIngredients: [
-            {
-                id: 1,
-                amount: 200,
-                measurementType: 'g',
-                recipeId: 1,
-                ingredientId: 1,
-            } as RecipeIngredient,
-            {
-                id: 2,
-                amount: 300,
-                measurementType: 'g',
-                recipeId: 1,
-                ingredientId: 2,
-            } as RecipeIngredient,
-            {
-                id: 3,
-                amount: 400,
-                measurementType: 'ml',
-                recipeId: 1,
-                ingredientId: 3,
-            } as RecipeIngredient,
-        ],
-        creator: mockUser,
-        reviews: [],
-    };
-
-    const recipe = new Recipe(recipeData);
-
-    expect(recipe.name).toBe(recipeData.name);
-    expect(recipe.description).toBe(recipeData.description);
-    expect(recipe.recipeIngredients).toEqual(recipeData.recipeIngredients);
-    expect(recipe.creator).toEqual(mockUser);
-    expect(recipe.reviews).toEqual(recipeData.reviews);
+const mockRecipe = new Recipe({
+    id: 1,
+    name: 'Mock Recipe',
+    description: 'Mock description',
+    reviews: [],
 });
 
-test('given two recipes with the same name, creator, and ingredients, when compared, then equals() returns true', () => {
-    const recipe1 = new Recipe({
-        name: 'Mock Recipe',
-        description: 'Description',
-        recipeIngredients: [],
-        creator: mockUser,
-        reviews: [],
-    });
-    const recipe2 = new Recipe({
-        name: 'Mock Recipe',
-        description: 'Description',
-        recipeIngredients: [],
-        creator: mockUser,
-        reviews: [],
-    });
+const mockRecipe2 = new Recipe({
+    id: 2,
+    name: 'Mock2 Recipe',
+    description: 'Mock2 description',
+    reviews: [],
+});
+
+const mockRecipeWithReview = new Recipe({
+    id: 3,
+    name: 'Mock3 Recipe',
+    description: 'Mock3 description',
+    reviews: [mockReview],
+});
+
+
+
+test('given: valid recipe data; when: Recipe is created; then: properties are correctly assigned', () => {
+    const recipe = new Recipe(mockRecipe);
+
+    expect(recipe.name).toBe(mockRecipe.name);
+    expect(recipe.description).toBe(mockRecipe.description);
+    expect(recipe.reviews).toEqual(mockRecipe.reviews);
+});
+
+test('given: two recipes with the same name, creator, and ingredients; when: compared; then: equals() returns true', () => {
+    const recipe1 = new Recipe(mockRecipe);
+    const recipe2 = new Recipe(mockRecipe);
 
     expect(recipe1.equals(recipe2)).toBe(true);
 });
 
-test('given two recipes with different names or creators, when compared, then equals() returns false', () => {
-    const recipe1 = new Recipe({
-        name: 'Mock Recipe',
-        description: 'Description',
-        recipeIngredients: [],
-        creator: mockUser,
-        reviews: [],
-    });
-    const recipe2 = new Recipe({
-        name: 'Another Recipe',
-        description: 'Description',
-        recipeIngredients: [],
-        creator: mockUser,
-        reviews: [],
-    });
+test('given: two recipes with different names or creators; when: compared; then: equals() returns false', () => {
+    const recipe1 = new Recipe(mockRecipe);
+    const recipe2 = new Recipe(mockRecipe2);
 
     expect(recipe1.equals(recipe2)).toBe(false);
+});
+
+test('given: valid recipe data containing a review; when: Recipe is created; then: properties are correctly assigned', () => {
+    const recipe = new Recipe(mockRecipeWithReview);
+
+    expect(recipe.name).toBe(mockRecipeWithReview.name);
+    expect(recipe.description).toBe(mockRecipeWithReview.description);
+    expect(recipe.reviews).toEqual(mockRecipeWithReview.reviews);
+    expect(recipe.reviews).toContain(mockReview);
 });

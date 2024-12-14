@@ -1,4 +1,12 @@
+const getAuthToken = () => {
+  const token = localStorage.getItem("token");
+  console.log("Retrieved token:", token);
+  return token;
+};
+
 const getAllIngredients = async () => {
+  const token = getAuthToken();
+
   try {
     const response = await fetch(
       process.env.NEXT_PUBLIC_API_URL + "/ingredients",
@@ -6,12 +14,13 @@ const getAllIngredients = async () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       }
     );
 
     if (!response.ok) {
-      throw new Error(`Error: ${response.status}`); // Log de foutstatus
+      throw new Error(`Error: ${response.status}`);
     }
 
     return response;

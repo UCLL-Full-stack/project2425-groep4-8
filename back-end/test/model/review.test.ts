@@ -2,43 +2,51 @@ import { Review } from '../../model/Review';
 import { User } from '../../model/User';
 import { Recipe } from '../../model/Recipe';
 
-let mockUser: User;
-let mockRecipe: Recipe;
-
-beforeEach(() => {
-    // Mock dependencies
-    mockUser = { equals: jest.fn(() => true) } as unknown as User;
-    mockRecipe = { equals: jest.fn(() => true) } as unknown as Recipe;
+const mockRecipe = new Recipe({
+    id: 1,
+    name: 'Mock Recipe',
+    description: 'Mock description',
+    reviews: [],
 });
 
-test('given valid review data, when a Review is created, then properties are correctly assigned', () => {
-    // given
-    const reviewData = { text: 'Great recipe!', score: 5, writer: mockUser, recipe: mockRecipe };
+//I use this mockReview only to create a mock user. I don't use it in the tests.
+const mockReview = new Review({ 
+    id: 1,
+    text: 'Mock Review',
+    score: 5,
+});
 
-    // when
+const mockUser = new User({
+    username : 'JulieCanCook',
+    password : 'I<3Cooking4Ever',
+    email : 'thecookjulie@gmail.com',
+    firstName : 'Julie',
+    lastName : 'Lanssens',
+    role : 'user',
+    recipes : [mockRecipe],
+    reviews : [mockReview],
+});
+
+test('given: valid review data; when: Review is created; then: properties are correctly assigned', () => {
+    const reviewData = { text: 'Great recipe!', score: 5,};
+
     const review = new Review(reviewData);
 
-    // then
-    expect(review.writer).toBe(reviewData.writer);
     expect(review.text).toBe(reviewData.text);
     expect(review.score).toBe(reviewData.score);
-    expect(review.recipe).toBe(reviewData.recipe);
 });
 
-test('given two reviews with the same text, score, writer, and recipe, when compared, then equals() returns true', () => {
-    // given
+test('given: two reviews with the same text, score, writer, and recipe; when: compared; then: equals() returns true', () => {
     const reviewData1 = { text: 'Amazing recipe', score: 5, writer: mockUser, recipe: mockRecipe };
     const reviewData2 = { text: 'Amazing recipe', score: 5, writer: mockUser, recipe: mockRecipe };
 
     const review1 = new Review(reviewData1);
     const review2 = new Review(reviewData2);
 
-    // then
     expect(review1.equals(review2)).toBe(true);
 });
 
-test('given two reviews with different texts, scores, writers, or recipes, when compared, then equals() returns false', () => {
-    // given
+test('given: two reviews with different texts, scores, writers, or recipes; when: compared; then: equals() returns false', () => {
     const differentUser = { equals: jest.fn(() => false) } as unknown as User;
     const differentRecipe = { equals: jest.fn(() => false) } as unknown as Recipe;
 
@@ -48,31 +56,24 @@ test('given two reviews with different texts, scores, writers, or recipes, when 
     const review1 = new Review(reviewData1);
     const review2 = new Review(reviewData2);
 
-    // then
     expect(review1.equals(review2)).toBe(false);
 });
 
 // Validation Tests
-test('given missing review text, when validated, then it throws an error', () => {
-    // given
+test('given: missing review text; when: validated; then: it throws an error', () => {
     const invalidReviewData = { score: 5, writer: mockUser, recipe: mockRecipe };
 
-    // then
     expect(() => new Review(invalidReviewData as any)).toThrow("Review text is required");
 });
 
-test('given a score below 1, when validated, then it throws an error', () => {
-    // given
+test('given: a score below 1; when: validated; then: it throws an error', () => {
     const invalidReviewData = { text: 'Bad recipe', score: 0, writer: mockUser, recipe: mockRecipe };
 
-    // then
     expect(() => new Review(invalidReviewData as any)).toThrow("Score must be between 1 and 5");
 });
 
-test('given a score above 5, when validated, then it throws an error', () => {
-    // given
+test('given: a score above 5; when: validated; then: it throws an error', () => {
     const invalidReviewData = { text: 'Too good to be true', score: 6, writer: mockUser, recipe: mockRecipe };
 
-    // then
     expect(() => new Review(invalidReviewData as any)).toThrow("Score must be between 1 and 5");
 });
