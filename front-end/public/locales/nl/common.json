@@ -13,6 +13,16 @@
     "recipes": "Recepten Overview",
     "ingredients": "Ingredienten Overview"
   },
+  "addRecipe": {
+    "title": "Voeg een nieuw recept toe",
+    "heading": "Creëer jouw recept",
+    "nameLabel": "Recept naam",
+    "descriptionLabel": "Recept beschrijving",
+    "ingredientsLabel": "Selecteer ingrediënten",
+    "submitButton": "Recept toevoegen",
+    "success": "Recept succesvol toegevoegd!",
+    "validation": "Vul alle velden in en selecteer minstens één ingrediënt."
+  },
   "pages": {
     "user": {
       "users": "Gebruikers",

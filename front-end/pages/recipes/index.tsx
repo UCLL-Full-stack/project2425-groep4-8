@@ -7,6 +7,7 @@ import Head from "next/head";
 import Header from "@/components/header";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import Link from "next/link";
 
 const Recipes: React.FC = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -40,7 +41,18 @@ const Recipes: React.FC = () => {
       <Header />
       <main className="min-h-screen bg-gradient-to-r px-6 py-10">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold text-center mb-8">{t("pages.recipe.recipes")}</h1>
+          <h1 className="text-4xl font-bold text-center mb-8">
+            {t("pages.recipe.recipes")}
+          </h1>
+
+          <section className="flex justify-center">
+            <Link
+              href="/recipes/add"
+              className=" bg-slate-400 text-white tracking-wide px-4 py-2 rounded-lg transition-all duration-300 ease-in-out  hover:bg-slate-800"
+            >
+              Add a recipe
+            </Link>
+          </section>
 
           <section className="mb-12">
             <h2 className="text-2xl font-semibold mb-6 text-center">
@@ -52,11 +64,13 @@ const Recipes: React.FC = () => {
                 selectRecipe={setSelectedRecipe}
               />
             ) : (
-              <p className="text-center text-gray-300">{t("pages.recipe.not")}</p>
+              <p className="text-center text-gray-300">
+                {t("pages.recipe.not")}
+              </p>
             )}
           </section>
 
-          {/* {selectedRecipe && (
+          {selectedRecipe && (
             <section className="bg-gray-700 rounded-lg p-6 shadow-lg">
               <h2 className="text-xl font-semibold mb-4">
                 Details for {selectedRecipe.name}
@@ -66,7 +80,7 @@ const Recipes: React.FC = () => {
                 onClose={closeRecipeDetails}
               />
             </section>
-          )} */}
+          )}
         </div>
       </main>
     </>

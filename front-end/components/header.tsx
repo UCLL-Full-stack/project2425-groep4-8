@@ -41,12 +41,14 @@ const Header: React.FC = () => {
             {t("home.ingredients")}
           </Link>
         )}
-        <Link
-          href="/recipes"
-          className="text-gray-100 uppercase font-medium tracking-wide px-4 py-2 rounded-lg transition-all duration-300 ease-in-out  hover:bg-slate-800"
-        >
-          {t("home.recipes")}
-        </Link>
+        {loggedInUser && (
+          <Link
+            href="/recipes"
+            className="text-gray-100 uppercase font-medium tracking-wide px-4 py-2 rounded-lg transition-all duration-300 ease-in-out  hover:bg-slate-800"
+          >
+            {t("home.recipes")}
+          </Link>
+        )}
         {loggedInUser && (
           <Link
             href="/reviews"
