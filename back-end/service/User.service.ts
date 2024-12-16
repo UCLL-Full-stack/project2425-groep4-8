@@ -21,6 +21,16 @@ const getUserByUsername = async (username: string): Promise<User> => {
 };
 
 const createUser = async (user: UserInput): Promise<User> => {
+    const bestaandeUsername = await getUserByUsername(user.username);
+    if (bestaandeUsername) {
+        throw new Error('User already exists');
+    }
+
+    const bestaandeEmail = await getUserByEmail(user.email);
+    if (bestaandeEmail) {
+        throw new Error('Email already exists');
+    }
+
     // Hash the password
     const hashedPassword = await bcrypt.hash(user.password, 10);
 

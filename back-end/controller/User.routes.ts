@@ -17,10 +17,6 @@ const userRouter = express.Router();
  *     User:
  *       type: object
  *       properties:
- *         id:
- *           type: integer
- *           description: Unique identifier for the user.
- *           example: 2
  *         username:
  *           type: string
  *           description: Username of the user.
@@ -37,6 +33,39 @@ const userRouter = express.Router();
  *           type: string
  *           description: Last name of the user.
  *           example: "Doe"
+ *     UserInput:
+ *       type: object
+ *       required:
+ *         - username
+ *         - password
+ *         - email
+ *         - firstName
+ *         - lastName
+ *       properties:
+ *         username:
+ *           type: string
+ *           description: Unique username for the user.
+ *           example: "johnneke"
+ *         password:
+ *           type: string
+ *           description: User's password.
+ *           example: "chef123"
+ *         email:
+ *           type: string
+ *           description: Email address of the user.
+ *           example: "john.doe@example.com"
+ *         firstName:
+ *           type: string
+ *           description: First name of the user.
+ *           example: "John"
+ *         lastName:
+ *           type: string
+ *           description: Last name of the user.
+ *           example: "Doe"
+ *         role:
+ *           type: string
+ *           description: Role assigned to the user.
+ *           example: "admin"
  *     AuthenticationRequest:
  *       type: object
  *       required:
@@ -70,6 +99,13 @@ const userRouter = express.Router();
  *           type: string
  *           description: Full name of the authenticated user.
  *           example: "John Doe"
+ *   responses:
+ *     UserCreated:
+ *       description: The user was successfully created.
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
  */
 
 /**
@@ -226,25 +262,21 @@ userRouter.get('/username/:username', async (req: Request, res: Response, next: 
  * @swagger
  * /users/signup:
  *   post:
- *     summary: Create a new user
+ *     summary: Create a new user account
  *     tags: [Users]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/UserInput'
  *     responses:
  *       201:
- *         description: User created successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/User'
+ *         $ref: '#/components/responses/UserCreated'
  *       400:
- *         description: Bad request
+ *         description: Bad request. Missing or invalid fields in the request body.
  *       500:
- *         description: Internal server error
+ *         description: Internal server error.
  */
 userRouter.post('/signup', async (req: Request, res: Response, next: NextFunction) => {
     try {

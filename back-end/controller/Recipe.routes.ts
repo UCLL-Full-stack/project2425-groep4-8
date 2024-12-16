@@ -151,12 +151,15 @@ recipeRouter.get('/:id', async (req: Request, res: Response, next: NextFunction)
  *                 items:
  *                   type: object
  *                   properties:
+ *                     id:
+ *                       type: number
+ *                       example: 12
  *                     name:
  *                       type: string
- *                       example: Tonijn
+ *                       example: Sugar
  *                     category:
  *                       type: string
- *                       example: Vis
+ *                       example: Baking
  *             required:
  *               - name
  *               - description

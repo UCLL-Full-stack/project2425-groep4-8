@@ -88,6 +88,14 @@ const createUser = async ({
     role,
 }: User): Promise<User> => {
     try {
+        // const userExists = await database.user.findUnique({
+        //     where: { username },
+        // });
+
+        // if (userExists) {
+        //     throw new Error('Gebruikersnaam bestaat al. Kies een andere.');
+        // }
+
         const userPrisma = await database.user.create({
             data: {
                 username,
