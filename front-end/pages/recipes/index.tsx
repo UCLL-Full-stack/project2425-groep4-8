@@ -71,8 +71,8 @@ const Recipes: React.FC = () => {
           </section>
 
           {selectedRecipe && (
-            <section className="bg-gray-700 rounded-lg p-6 shadow-lg">
-              <h2 className="text-xl font-semibold mb-4">
+            <section className="bg-slate-400 rounded-lg p-6 shadow-lg">
+              <h2 className="text-3xl text-white font-semibold">
                 Details for {selectedRecipe.name}
               </h2>
               <RecipeDetails

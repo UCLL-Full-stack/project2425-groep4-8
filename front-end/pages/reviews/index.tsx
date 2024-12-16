@@ -6,6 +6,7 @@ import Head from "next/head";
 import Header from "@/components/header";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import Link from "next/link";
 
 const Reviews: React.FC = () => {
   const [reviews, setReview] = useState<Review[]>([]);
@@ -37,6 +38,14 @@ const Reviews: React.FC = () => {
           <h1 className="text-4xl font-bold text-center mb-8">
             {t("pages.review.reviews")}
           </h1>
+          <section className="flex justify-center">
+            <Link
+              href="/reviews/add"
+              className=" bg-slate-400 text-white tracking-wide px-4 py-2 rounded-lg transition-all duration-300 ease-in-out  hover:bg-slate-800"
+            >
+              Add a review
+            </Link>
+          </section>
           <section className="mb-12">
             <h2 className="text-2xl font-semibold mb-6 text-center">
               {t("overview.reviews")}
