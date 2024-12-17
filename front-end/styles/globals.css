@@ -7,16 +7,12 @@
   body {
     height: 100%;
     margin: 0;
-    overflow: hidden;
-  }
-
-  h1 {
-    @apply text-center text-black text-3xl;
+    overflow: auto;
   }
 
   h2,
   h3 {
-    @apply px-6 text-indigo-800 text-xl pt-6;
+    @apply text-black text-xl pt-6;
   }
 
   thead tr {

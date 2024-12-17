@@ -1,11 +1,6 @@
 import { User } from './User';
 import { Recipe } from './Recipe';
-import {
-    RecipeIngredient as RecipeIngredientPrisma,
-    Recipe as RecipePrisma,
-    Review as ReviewPrisma,
-    User as UserPrisma,
-} from '@prisma/client';
+import { Recipe as RecipePrisma, Review as ReviewPrisma, User as UserPrisma } from '@prisma/client';
 export class Review {
     readonly id?: number;
     readonly text: string;

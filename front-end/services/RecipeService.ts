@@ -16,8 +16,28 @@ const getAllRecipes = () => {
   });
 };
 
+const AddRecipe = (
+  userId: number,
+  recipeData: { name: string; description: string }
+) => {
+  const token = getAuthToken();
+
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/recipes/${userId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      ...recipeData,
+      userId,
+    }),
+  });
+};
+
 const RecipeService = {
   getAllRecipes,
+  AddRecipe,
 };
 
 export default RecipeService;

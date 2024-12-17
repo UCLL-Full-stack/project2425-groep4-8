@@ -6,6 +6,7 @@ const getAllReviews = async (): Promise<Review[]> => {
     const reviewPrisma = await database.review.findMany({
         include: {
             recipe: true,
+            user: true,
         },
     });
 
@@ -20,6 +21,10 @@ const getReviewById = async (id: number): Promise<Review | null> => {
     const reviewPrisma = await database.review.findUnique({
         where: {
             id,
+        },
+        include: {
+            user: true,
+            recipe: true,
         },
     });
 
@@ -47,8 +52,20 @@ const createReview = async (review: Review, userId: number, recipeId: number): P
     return Review.from(reviewPrisma);
 };
 
+const deleteReview = async (id: number): Promise<void> => {
+    try {
+        await database.review.delete({
+            where: { id: id },
+        });
+    } catch (error) {
+        console.error(error);
+        throw new Error('Error in database file at deleteReview');
+    }
+};
+
 export default {
     getAllReviews,
     getReviewById,
     createReview,
+    deleteReview,
 };

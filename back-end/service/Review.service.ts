@@ -17,8 +17,19 @@ const createReview = async (
     return ReviewDb.createReview(review, userId, recipeId);
 };
 
+const deleteReview = async (id: number): Promise<boolean> => {
+    const review = await ReviewDb.getReviewById(id);
+    if (!review) {
+        return false;
+    }
+
+    await ReviewDb.deleteReview(id);
+    return true;
+};
+
 export default {
     getAllReviews,
     getReviewById,
     createReview,
+    deleteReview,
 };

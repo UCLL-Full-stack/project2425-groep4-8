@@ -10,6 +10,16 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 const Users: React.FC = () => {
   const [users, setUser] = useState<User[]>([]);
   const [error, setError] = useState<String>();
+  const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const user = sessionStorage.getItem("loggedInUser");
+    if (user) {
+      setLoggedInUser(JSON.parse(user));
+    }
+
+    console.log("user " + user);
+  }, []);
 
   const getUsers = async () => {
     try {
@@ -49,10 +59,16 @@ const Users: React.FC = () => {
             <h2 className="text-2xl font-semibold mb-6 text-center">
               {t("overview.users")}
             </h2>
-            {users.length > 0 ? (
-              <UserOverviewTable users={users} />
+            {loggedInUser?.role === "admin" ? (
+              users.length > 0 ? (
+                <UserOverviewTable users={users} />
+              ) : (
+                <p className="text-center text-gray-300">
+                  {t("pages.user.not")}
+                </p>
+              )
             ) : (
-              <p className="text-center text-gray-300">{t("pages.user.not")}</p>
+              <p className="text-center text-gray-300">{t("home.nologin")}</p>
             )}
           </section>
         </div>

@@ -20,38 +20,28 @@ model User {
 }
 
 model Recipe {
-  id          Int                @id @default(autoincrement())
+  id          Int          @id @default(autoincrement())
   name        String
   description String
-  ingredients RecipeIngredient[]
+  ingredients Ingredient[]
   reviews     Review[]
-  user        User               @relation(fields: [userId], references: [id])
+  user        User         @relation(fields: [userId], references: [id])
   userId      Int
 }
 
 model Ingredient {
-  id       Int                @id @default(autoincrement())
+  id       Int      @id @default(autoincrement())
   name     String
   category String
-  recipes  RecipeIngredient[]
-}
-
-model RecipeIngredient {
-  id              Int        @id @default(autoincrement())
-  amount          Float
-  measurementType String
-  recipe          Recipe     @relation(fields: [recipeId], references: [id])
-  recipeId        Int
-  ingredient      Ingredient @relation(fields: [ingredientId], references: [id])
-  ingredientId    Int
+  recipes  Recipe[]
 }
 
 model Review {
   id       Int    @id @default(autoincrement())
   text     String
   score    Int
-  recipe   Recipe @relation(fields: [recipeId], references: [id])
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: NoAction)
   recipeId Int
-  user     User   @relation(fields: [userId], references: [id])
+  user     User   @relation(fields: [userId], references: [id], onDelete: NoAction)
   userId   Int
 }

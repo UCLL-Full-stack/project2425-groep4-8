@@ -1,12 +1,11 @@
 import { Ingredient } from './Ingredient';
-import { RecipeIngredient } from './RecipeIngredient';
 import { Review } from './Review';
 import { User } from './User';
 import {
-    RecipeIngredient as RecipeIngredientPrisma,
     Recipe as RecipePrisma,
     Review as ReviewPrisma,
     User as UserPrisma,
+    Ingredient as IngredientPrisma,
 } from '@prisma/client';
 
 export class Recipe {
@@ -15,6 +14,7 @@ export class Recipe {
     readonly description: string;
     readonly reviews?: Review[];
     // readonly recipeIngredients?: RecipeIngredient[];
+    readonly ingredients?: Ingredient[];
 
     constructor(data: {
         id?: number;
@@ -22,16 +22,18 @@ export class Recipe {
         description: string;
         reviews?: Review[];
         // recipeIngredients?: RecipeIngredient[];
+        readonly ingredients?: Ingredient[];
     }) {
         this.id = data.id;
         this.name = data.name;
         this.description = data.description;
         this.reviews = data.reviews;
         // this.recipeIngredients = data.recipeIngredients;
+        this.ingredients = data.ingredients;
     }
 
     equals(recipe: Recipe): boolean {
-        return this.name === recipe.name
+        return this.id === recipe.id && this.name === recipe.name;
     }
 
     static from = ({
@@ -40,8 +42,10 @@ export class Recipe {
         description,
         // recipeIngredients,
         reviews,
+        ingredients,
     }: RecipePrisma & {
         // recipeIngredients: RecipeIngredientPrisma[];
+        ingredients: IngredientPrisma[];
         reviews: ReviewPrisma[];
     }): Recipe => {
         return new Recipe({
@@ -50,6 +54,7 @@ export class Recipe {
             description,
             // recipeIngredients: recipeIngredients.map((ri) => RecipeIngredient.from(ri)),
             reviews: reviews.map((review) => Review.from(review)),
+            ingredients: ingredients.map((ingredient) => Ingredient.from(ingredient)),
         });
     };
 }

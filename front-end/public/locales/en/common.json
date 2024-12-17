@@ -5,13 +5,25 @@
     "recipes": "Recipes",
     "ingredients": "Ingredients",
     "login": "Login",
-    "logout": "Logout"
+    "logout": "Logout",
+    "register": "Register",
+    "nologin": "No access to this page"
   },
   "overview": {
     "users": "Users Overview",
     "reviews": "Reviews Overview",
     "recipes": "Recipes Overview",
     "ingredients": "Ingredients Overview"
+  },
+  "addRecipe": {
+    "title": "Add a New Recipe",
+    "heading": "Create Your Recipe",
+    "nameLabel": "Recipe Name",
+    "descriptionLabel": "Recipe Description",
+    "ingredientsLabel": "Select Ingredients",
+    "submitButton": "Add Recipe",
+    "success": "Recipe added successfully!",
+    "validation": "Please fill in all fields and select at least one ingredient."
   },
   "pages": {
     "user": {

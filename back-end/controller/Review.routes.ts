@@ -158,4 +158,43 @@ reviewRouter.post('/:userId/:recipeId', async (req: Request, res: Response, next
     }
 });
 
+/**
+ * @swagger
+ * /reviews/{id}:
+ *   delete:
+ *     security:
+ *      - bearerAuth: []
+ *     summary: Delete a review by ID
+ *     tags: [Reviews]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the review to delete
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       204:
+ *         description: Review deleted successfully
+ *       404:
+ *         description: Review not found
+ *       500:
+ *         description: Internal server error
+ */
+reviewRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const id = parseInt(req.params.id);
+        const deleted = await ReviewService.deleteReview(id);
+
+        if (!deleted) {
+            res.status(404).json({ message: 'Review not found' });
+            return;
+        }
+
+        res.status(204).send();
+    } catch (error) {
+        next(error);
+    }
+});
+
 export default reviewRouter;

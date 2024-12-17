@@ -60,8 +60,8 @@ const UserLoginForm: React.FC = () => {
         })
       );
       localStorage.setItem("token", user.token);
-      console.log(sessionStorage.getItem("loggedInUser"));
-      console.log(localStorage.getItem("token"));
+      console.log("loggedin: " + sessionStorage.getItem("loggedInUser"));
+      console.log("token: " + localStorage.getItem("token"));
     }
 
     setStatusMessages([

@@ -9,27 +9,23 @@ type Props = {
 
 const RecipeDetails: React.FC<Props> = ({ recipe, onClose }) => {
   return (
-    <div className="recipe-details">
-      <h2>{recipe.name}</h2>
+    <div className="">
+      <h2 className="text-white">{recipe.name}</h2>
       <button onClick={onClose} className={styles.closeButton}>
         Close
       </button>
       <table>
         <tbody>
-          <tr>
-            <td>ID:</td>
-            <td>{recipe.id}</td>
-          </tr>
-          <tr>
+          <tr className="border-y-black">
             <td>Name:</td>
             <td>{recipe.name}</td>
           </tr>
-          <tr>
+          <tr className="border-y-black">
             <td>Description:</td>
             <td>{recipe.description}</td>
           </tr>
 
-          <tr>
+          <tr className="border-y-black">
             <td>Reviews:</td>
             <td>
               {recipe.reviews && recipe.reviews.length > 0 ? (

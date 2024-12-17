@@ -16,11 +16,21 @@ const getUserByEmail = async (email: string): Promise<User | null> => {
     return UserDb.getUserByEmail(email);
 };
 
-const getUserByUsername = async (username: string): Promise<User> => {
+const getUserByUsername = async (username: string): Promise<User | null> => {
     return UserDb.getUserByUsername(username);
 };
 
 const createUser = async (user: UserInput): Promise<User> => {
+    const bestaandeUsername = await getUserByUsername(user.username);
+    if (bestaandeUsername) {
+        throw new Error('User already exists');
+    }
+
+    const bestaandeEmail = await getUserByEmail(user.email);
+    if (bestaandeEmail) {
+        throw new Error('Email already exists');
+    }
+
     // Hash the password
     const hashedPassword = await bcrypt.hash(user.password, 10);
 
@@ -43,6 +53,9 @@ const createUser = async (user: UserInput): Promise<User> => {
 const authenticate = async ({ username, password }: UserInput): Promise<AuthenticationRespone> => {
     const user = await getUserByUsername(username);
 
+    if (!user) {
+        throw new Error('User not found');
+    }
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
         throw new Error('Incorrect password');

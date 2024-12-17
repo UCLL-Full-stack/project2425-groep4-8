@@ -9,13 +9,13 @@ export type Recipe = {
   name: string;
   description: string;
   ingredients: Ingredient[];
-  creator: User;
+  user: User;
   reviews: Review[];
 };
 
 export type Review = {
   id?: number;
-  writer: User;
+  user: User;
   text: string;
   score: number;
   recipe: Recipe;

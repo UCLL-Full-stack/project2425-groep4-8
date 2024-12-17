@@ -5,9 +5,10 @@ import { useTranslation } from "next-i18next";
 
 type Props = {
   reviews: Array<Review>;
+  onDelete: (id: number) => void;
 };
 
-const ReviewOverviewTable: React.FC<Props> = ({ reviews }: Props) => {
+const ReviewOverviewTable: React.FC<Props> = ({ reviews, onDelete }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -18,6 +19,7 @@ const ReviewOverviewTable: React.FC<Props> = ({ reviews }: Props) => {
             <tr>
               <th scope="col">{t("pages.review.score")}</th>
               <th scope="col">{t("pages.review.text")}</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -25,6 +27,16 @@ const ReviewOverviewTable: React.FC<Props> = ({ reviews }: Props) => {
               <tr key={index}>
                 <td>{review.score}</td>
                 <td>{review.text}</td>
+                <td>
+                  <button
+                    className="border border-red-300 bg-red-600 text-white p-2 rounded-xl"
+                    onClick={() =>
+                      review.id !== undefined && onDelete(review.id)
+                    }
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

@@ -58,7 +58,7 @@ const getUserByEmail = async (email: string): Promise<User | null> => {
     }
 };
 
-const getUserByUsername = async (username: string): Promise<User> => {
+const getUserByUsername = async (username: string): Promise<User | null> => {
     try {
         const userPrisma = await database.user.findFirst({
             where: { username },
@@ -68,7 +68,7 @@ const getUserByUsername = async (username: string): Promise<User> => {
             },
         });
         if (!userPrisma) {
-            throw new Error(`User with username "${username}" not found`);
+            return null;
         }
         return User.from(userPrisma);
     } catch (error) {
