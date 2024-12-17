@@ -59,7 +59,7 @@ const Users: React.FC = () => {
             <h2 className="text-2xl font-semibold mb-6 text-center">
               {t("overview.users")}
             </h2>
-            {loggedInUser ? (
+            {loggedInUser?.role === "admin" ? (
               users.length > 0 ? (
                 <UserOverviewTable users={users} />
               ) : (

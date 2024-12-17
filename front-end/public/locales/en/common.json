@@ -7,7 +7,7 @@
     "login": "Login",
     "logout": "Logout",
     "register": "Register",
-    "nologin": "Log in to see the information"
+    "nologin": "No access to this page"
   },
   "overview": {
     "users": "Users Overview",
