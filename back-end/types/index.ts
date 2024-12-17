@@ -1,5 +1,3 @@
-import { RecipeIngredient } from '@prisma/client';
-
 type Role = 'admin' | 'chef' | 'user';
 
 type IngredientInput = {
@@ -12,14 +10,14 @@ type RecipeInput = {
     id?: number;
     name: string;
     description: string;
-    ingredients: RecipeIngredient[];
-    creator: UserInput;
+    ingredients: IngredientInput[];
+    user: UserInput;
     reviews: ReviewInput[];
 };
 
 type ReviewInput = {
     id?: number;
-    writer: UserInput;
+    user: UserInput;
     text: string;
     score: number;
     recipe: RecipeInput;

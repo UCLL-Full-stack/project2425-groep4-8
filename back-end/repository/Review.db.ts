@@ -6,6 +6,7 @@ const getAllReviews = async (): Promise<Review[]> => {
     const reviewPrisma = await database.review.findMany({
         include: {
             recipe: true,
+            user: true,
         },
     });
 
@@ -20,6 +21,10 @@ const getReviewById = async (id: number): Promise<Review | null> => {
     const reviewPrisma = await database.review.findUnique({
         where: {
             id,
+        },
+        include: {
+            user: true,
+            recipe: true,
         },
     });
 

@@ -39,9 +39,36 @@ const AddReview = (
   );
 };
 
+const deleteReview = async (id: number) => {
+  const token = getAuthToken();
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/reviews/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to delete review");
+    }
+
+    return true;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 const ReviewService = {
   getAllReviews,
   AddReview,
+  deleteReview,
 };
 
 export default ReviewService;

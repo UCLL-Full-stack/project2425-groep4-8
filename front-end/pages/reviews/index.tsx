@@ -25,9 +25,21 @@ const Reviews: React.FC = () => {
     try {
       const response = await ReviewService.getAllReviews();
       const data = await response.json();
+      console.log(data);
       setReview(data);
     } catch (error) {
       console.error("Failed to fetch reviews", error);
+    }
+  };
+
+  const deleteReview = async (id: number) => {
+    try {
+      await ReviewService.deleteReview(id);
+      setReview((prevReviews) =>
+        prevReviews.filter((review) => review.id !== id)
+      );
+    } catch (error) {
+      console.error("Error deleting review:", error);
     }
   };
 
@@ -64,7 +76,10 @@ const Reviews: React.FC = () => {
                       Add a review
                     </Link>
                   </section>
-                  <ReviewOverviewTable reviews={reviews} />
+                  <ReviewOverviewTable
+                    reviews={reviews}
+                    onDelete={deleteReview}
+                  />
                 </>
               ) : (
                 <p className="text-center text-gray-300">
