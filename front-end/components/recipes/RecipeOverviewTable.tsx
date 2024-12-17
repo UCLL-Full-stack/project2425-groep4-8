@@ -1,5 +1,5 @@
-import React from "react";
-import { Recipe } from "../../types";
+import React, { useEffect, useState } from "react";
+import { Recipe, User } from "../../types";
 import styles from "../../styles/Home.module.css";
 import { useTranslation } from "next-i18next";
 

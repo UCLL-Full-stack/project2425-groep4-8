@@ -58,7 +58,7 @@ const getUserByEmail = async (email: string): Promise<User | null> => {
     }
 };
 
-const getUserByUsername = async (username: string): Promise<User> => {
+const getUserByUsername = async (username: string): Promise<User | null> => {
     try {
         const userPrisma = await database.user.findFirst({
             where: { username },
@@ -68,7 +68,7 @@ const getUserByUsername = async (username: string): Promise<User> => {
             },
         });
         if (!userPrisma) {
-            throw new Error(`User with username "${username}" not found`);
+            return null;
         }
         return User.from(userPrisma);
     } catch (error) {
@@ -88,14 +88,6 @@ const createUser = async ({
     role,
 }: User): Promise<User> => {
     try {
-        // const userExists = await database.user.findUnique({
-        //     where: { username },
-        // });
-
-        // if (userExists) {
-        //     throw new Error('Gebruikersnaam bestaat al. Kies een andere.');
-        // }
-
         const userPrisma = await database.user.create({
             data: {
                 username,

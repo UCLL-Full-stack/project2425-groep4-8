@@ -5,7 +5,9 @@
     "recipes": "Recipes",
     "ingredients": "Ingredients",
     "login": "Login",
-    "logout": "Logout"
+    "logout": "Logout",
+    "register": "Register",
+    "nologin": "Log in to see the information"
   },
   "overview": {
     "users": "Users Overview",

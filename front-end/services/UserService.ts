@@ -29,6 +29,16 @@ const loginUser = (user: User) => {
   });
 };
 
+const registerUser = (user: User) => {
+  return fetch(process.env.NEXT_PUBLIC_API_URL + "/users/signup", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  });
+};
+
 const getUserByUsername = (username: string) => {
   const token = getAuthToken();
 
@@ -47,6 +57,7 @@ const getUserByUsername = (username: string) => {
 const UserService = {
   getAllUsers,
   loginUser,
+  registerUser,
   getUserByUsername,
 };
 

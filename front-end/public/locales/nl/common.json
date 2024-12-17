@@ -5,7 +5,9 @@
     "recipes": "Recepten",
     "ingredients": "Ingredienten",
     "login": "Inloggen",
-    "logout": "Uitloggen"
+    "logout": "Uitloggen",
+    "register": "Registeren",
+    "nologin": "Log in om de informatie te zien"
   },
   "overview": {
     "users": "Gebruikers Overview",

@@ -73,6 +73,14 @@ const Header: React.FC = () => {
             {t("home.login")}
           </Link>
         )}
+        {!loggedInUser && (
+          <Link
+            href="/register"
+            className="text-gray-100 uppercase font-medium tracking-wide px-4 py-2 rounded-lg transition-all duration-300 ease-in-out  hover:bg-slate-800"
+          >
+            {t("home.register")}
+          </Link>
+        )}
         {loggedInUser && (
           <Link
             href="/login"
