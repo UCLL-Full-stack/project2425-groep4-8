@@ -18,11 +18,11 @@ export class Ingredient {
     }
 
     validate(ingredient: { id?: number; name: string; category: string }) {
-        if (!ingredient.name) {
+        if (ingredient.name == null) {
             throw new Error('Ingredient name is required');
         }
 
-        if (!ingredient.category) {
+        if (ingredient.category == null) {
             throw new Error('Ingredient category is required');
         }
     }

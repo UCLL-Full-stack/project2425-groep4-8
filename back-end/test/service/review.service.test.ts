@@ -15,6 +15,7 @@ const mockUser = new User({
     lastName: 'test',
     recipes: [],
     reviews: [],
+    role: "user",
 });
 
 // Create an empty Recipe instance for testing
@@ -22,10 +23,10 @@ const mockRecipe = new Recipe({
     id: 0, // or any default value you prefer
     name: 'test',
     description: 'test',
-    creator: mockUser,
-    recipeIngredients: [],
+    ingredients: [],
     reviews: [],
 });
+
 
 // Reset mocks before each test
 beforeEach(() => {
@@ -62,9 +63,9 @@ test('getRecipeById should return null if recipe is not found', async () => {
 
 test('createRecipe should create a recipe and return it', async () => {
     (RecipeDb.createRecipe as jest.Mock).mockResolvedValue(mockRecipe);
-
-    const recipe = await RecipeService.createRecipe(mockRecipe);
+    const numberofid = 0
+    const recipe = await RecipeService.createRecipe(mockRecipe, numberofid);
 
     expect(recipe).toEqual(mockRecipe);
-    expect(RecipeDb.createRecipe).toHaveBeenCalledWith(mockRecipe);
+    expect(RecipeDb.createRecipe).toHaveBeenCalledWith(mockRecipe, 0);
 });
