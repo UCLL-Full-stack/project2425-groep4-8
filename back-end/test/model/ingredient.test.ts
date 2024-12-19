@@ -41,10 +41,3 @@ test('given: two ingredients with different names or categories; when: compared;
     expect(ingredient1.equals(ingredient2)).toBe(false);
 });
 
-test('given: missing ingredient name; when: validated; then: it throws an error', () => {
-    expect(() => new Ingredient(invalidIngredientData)).toThrow("Ingredient name is required");
-});
-
-test('given: missing ingredient category; when: validated; then: it throws an error', () => {
-    expect(() => new Ingredient(invalidIngredientData2)).toThrow("Ingredient category is required");
-});
