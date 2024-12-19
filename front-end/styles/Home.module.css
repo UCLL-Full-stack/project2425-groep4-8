@@ -17,6 +17,12 @@
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.chefRow {
+  background-color: gold; /* Gouden achtergrondkleur */
+  color: black; /* Zwarte tekstkleur om contrast te behouden */
+  font-weight: bold; /* Maak de tekst vet */
+}
+
 .recipeTable {
   width: 100%;
   border-collapse: collapse;
@@ -52,7 +58,6 @@
 .tableContainer table tbody tr {
   background-color: transparent; /* Ensure default background */
 }
-
 
 /* Recipes.module.css */
 .mainContainer {

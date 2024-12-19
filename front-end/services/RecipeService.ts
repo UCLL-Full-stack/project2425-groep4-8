@@ -1,3 +1,5 @@
+import { Ingredient } from "@/types";
+
 const getAuthToken = () => {
   const token = localStorage.getItem("token");
   console.log("Retrieved token:", token);
@@ -35,9 +37,30 @@ const AddRecipe = (
   });
 };
 
+const UpdateRecipe = (
+  userId: number,
+  recipeId: number,
+  recipeData: { name: string; description: string; ingredients: Ingredient[] }
+) => {
+  const token = getAuthToken();
+
+  return fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/recipes/${userId}/${recipeId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(recipeData),
+    }
+  );
+};
+
 const RecipeService = {
   getAllRecipes,
   AddRecipe,
+  UpdateRecipe,
 };
 
 export default RecipeService;

@@ -65,8 +65,34 @@ const createRecipe = async (
     }
 };
 
+const updateRecipeById = async (id: number, recipeData: Recipe): Promise<Recipe> => {
+    try {
+        const updatedRecipe = await database.recipe.update({
+            where: { id },
+            data: {
+                name: recipeData.name,
+                description: recipeData.description,
+                ingredients: recipeData.ingredients
+                    ? {
+                          connect: recipeData.ingredients.map((ingredient) => ({
+                              id: ingredient.id,
+                          })),
+                      }
+                    : undefined,
+            },
+            include: { ingredients: true, user: true, reviews: true },
+        });
+
+        return Recipe.from(updatedRecipe);
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
+    }
+};
+
 export default {
     getAllRecipes,
     getRecipeById,
     createRecipe,
+    updateRecipeById,
 };
