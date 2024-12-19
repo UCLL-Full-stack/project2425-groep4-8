@@ -33,14 +33,14 @@ const Header: React.FC = () => {
         >
           Home
         </Link>
-        {/* {loggedInUser && (
+        {loggedInUser && (
           <Link
             href="/ingredients"
             className="text-gray-100 uppercase font-medium tracking-wide px-4 py-2 rounded-lg transition-all duration-300 ease-in-out hover:bg-slate-800"
           >
             {t("home.ingredients")}
           </Link>
-        )} */}
+        )}
         {loggedInUser && (
           <Link
             href="/recipes"
@@ -90,11 +90,11 @@ const Header: React.FC = () => {
             {t("home.logout")}
           </Link>
         )}
-{loggedInUser && (
-  <p className="text-gray-100 font-medium tracking-wide px-2 py-2">
-    {loggedInUser.username}
-  </p>
-)}
+        {loggedInUser && (
+          <p className="text-gray-100 font-medium tracking-wide px-2 py-2">
+            {t("home.welcome")} {loggedInUser.username}
+          </p>
+        )}
 
         <Language></Language>
       </nav>

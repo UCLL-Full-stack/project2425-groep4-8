@@ -9,7 +9,6 @@ import useSWR, { mutate } from "swr";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const Ingredients: React.FC = () => {
-  const [ingredients, setIngredient] = useState<Ingredient[]>([]);
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -56,7 +55,7 @@ const Ingredients: React.FC = () => {
             </h2>
             {loggedInUser ? (
               data?.ingredients.length > 0 ? (
-                <IngredientOverviewTable ingredients={ingredients} />
+                <IngredientOverviewTable ingredients={data?.ingredients} />
               ) : (
                 <p className="text-center text-gray-300">
                   {t("pages.ingredient.not")}

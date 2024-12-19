@@ -8,7 +8,11 @@
     "logout": "Logout",
     "register": "Register",
     "nologin": "No access to this page",
-    "delete": "Delete"
+    "delete": "Delete",
+    "welcome": "Welcome, ",
+    "username": "Username",
+    "password": "Password",
+    "role": "Role"
   },
   "overview": {
     "users": "Users Overview",

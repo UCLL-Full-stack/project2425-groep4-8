@@ -8,7 +8,11 @@
     "logout": "Uitloggen",
     "register": "Registeren",
     "nologin": "Geen toegang tot deze pagina",
-    "delete": "Verwijderen"
+    "delete": "Verwijderen",
+    "welcome": "Welkom, ",
+    "username": "Gebruikersnaam",
+    "password": "Passwoord",
+    "role": "Rol"
   },
   "overview": {
     "users": "Gebruikers Overview",
