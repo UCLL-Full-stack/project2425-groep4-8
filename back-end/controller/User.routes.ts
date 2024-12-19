@@ -330,4 +330,44 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
     }
 });
 
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     security:
+ *      - bearerAuth: []
+ *     summary: Delete a user by ID
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to delete
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       204:
+ *         description: User deleted successfully
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+userRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const id = parseInt(req.params.id);
+        console.log(id);
+        const deleted = await UserService.deleteUser(id);
+
+        if (!deleted) {
+            res.status(404).json({ message: 'User not found' });
+            return;
+        }
+
+        res.status(204).send();
+    } catch (error) {
+        next(error);
+    }
+});
+
 export default userRouter;

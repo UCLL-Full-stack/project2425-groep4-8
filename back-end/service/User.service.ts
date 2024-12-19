@@ -69,6 +69,16 @@ const authenticate = async ({ username, password }: UserInput): Promise<Authenti
     };
 };
 
+const deleteUser = async (id: number): Promise<boolean> => {
+    const user = await UserDb.getUserById(id);
+    if (!user) {
+        return false;
+    }
+
+    await UserDb.deleteUser(id);
+    return true;
+};
+
 export default {
     getAllUsers,
     getUserById,
@@ -76,4 +86,5 @@ export default {
     getUserByUsername,
     createUser,
     authenticate,
+    deleteUser,
 };

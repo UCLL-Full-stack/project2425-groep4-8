@@ -54,11 +54,38 @@ const getUserByUsername = (username: string) => {
   );
 };
 
+const deleteUser = async (id: number) => {
+  const token = getAuthToken();
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to delete review");
+    }
+
+    return true;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 const UserService = {
   getAllUsers,
   loginUser,
   registerUser,
   getUserByUsername,
+  deleteUser,
 };
 
 export default UserService;

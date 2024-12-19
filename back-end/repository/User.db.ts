@@ -115,10 +115,22 @@ const createUser = async ({
     }
 };
 
+const deleteUser = async (id: number): Promise<void> => {
+    try {
+        await database.user.delete({
+            where: { id: id },
+        });
+    } catch (error) {
+        console.error(error);
+        throw new Error('Error in database file at deleteUser');
+    }
+};
+
 export default {
     getAllUsers,
     getUserById,
     getUserByEmail,
     getUserByUsername,
     createUser,
+    deleteUser,
 };

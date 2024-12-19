@@ -13,7 +13,7 @@ import { Request, Response, NextFunction } from 'express';
 
 const app = express();
 dotenv.config();
-const port = process.env.APP_PORT || 3002;
+const port = process.env.APP_PORT || 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -58,6 +58,6 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     }
 });
 
-app.listen(port || 3002, () => {
+app.listen(port || 3000, () => {
     console.log(`Back-end is running on port ${port}.`);
 });

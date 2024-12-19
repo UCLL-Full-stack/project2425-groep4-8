@@ -6,6 +6,7 @@ import Head from "next/head";
 import Header from "@/components/header";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import UserService from "../../services/UserService";
 
 const Users: React.FC = () => {
   const [users, setUser] = useState<User[]>([]);
@@ -38,6 +39,15 @@ const Users: React.FC = () => {
     }
   };
 
+  const deleteUser = async (id: number) => {
+    try {
+      await UserService.deleteUser(id);
+      setUser((prevUsers) => prevUsers.filter((user) => user.id !== id));
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  };
+
   useEffect(() => {
     getUsers();
   }, []);
@@ -61,7 +71,7 @@ const Users: React.FC = () => {
             </h2>
             {loggedInUser?.role === "admin" ? (
               users.length > 0 ? (
-                <UserOverviewTable users={users} />
+                <UserOverviewTable users={users} onDelete={deleteUser} />
               ) : (
                 <p className="text-center text-gray-300">
                   {t("pages.user.not")}
