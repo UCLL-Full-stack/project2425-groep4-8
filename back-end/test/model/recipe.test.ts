@@ -1,7 +1,6 @@
 import { User } from '../../model/User';
 import { Recipe } from '../../model/Recipe';
 import { Review } from '../../model/Review';
-import { RecipeIngredient } from '@prisma/client';
 
 //I use this mockReview only to create a mock recipe. I don't use it in the tests.
 const mockReview = new Review({ 

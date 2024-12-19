@@ -1,13 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { User } from "../../types";
 import styles from "../../styles/Home.module.css";
 import { useTranslation } from "next-i18next";
 
 type Props = {
   users: Array<User>;
+  onDelete: (id: number) => void;
 };
 
-const UserOverviewTable: React.FC<Props> = ({ users }: Props) => {
+const UserOverviewTable: React.FC<Props> = ({ users, onDelete }: Props) => {
+  const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const user = sessionStorage.getItem("loggedInUser");
+    if (user) {
+      setLoggedInUser(JSON.parse(user));
+    }
+
+    console.log("user " + user);
+  }, []);
+
   const { t } = useTranslation();
 
   return (
@@ -18,6 +30,8 @@ const UserOverviewTable: React.FC<Props> = ({ users }: Props) => {
             <tr>
               <th scope="col">{t("pages.user.firstname")}</th>
               <th scope="col">{t("pages.user.lastname")}</th>
+              <th scope="col">{t("pages.user.username")}</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -25,6 +39,17 @@ const UserOverviewTable: React.FC<Props> = ({ users }: Props) => {
               <tr key={index}>
                 <td>{user.firstName}</td>
                 <td>{user.lastName}</td>
+                <td>{user.username}</td>
+                {loggedInUser?.role === "admin" && (
+                  <td>
+                    <button
+                      className="border border-red-300 bg-red-600 text-white p-2 rounded-xl"
+                      onClick={() => user.id !== undefined && onDelete(user.id)}
+                    >
+                      {t("home.delete")}
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

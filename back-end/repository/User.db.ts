@@ -18,7 +18,7 @@ const getAllUsers = async (): Promise<User[]> => {
 
 const getUserById = async (id: number): Promise<User | null> => {
     try {
-        const userPrisma = await database.user.findUnique({
+        const userPrisma = await database.user.findFirst({
             where: {
                 id: id,
             },
@@ -61,7 +61,7 @@ const getUserByEmail = async (email: string): Promise<User | null> => {
 const getUserByUsername = async (username: string): Promise<User | null> => {
     try {
         const userPrisma = await database.user.findFirst({
-            where: { username },
+            where: { username: username },
             include: {
                 recipes: true,
                 reviews: true,
@@ -115,10 +115,22 @@ const createUser = async ({
     }
 };
 
+const deleteUser = async (id: number): Promise<void> => {
+    try {
+        await database.user.delete({
+            where: { id: id },
+        });
+    } catch (error) {
+        console.error(error);
+        throw new Error('Error in database file at deleteUser');
+    }
+};
+
 export default {
     getAllUsers,
     getUserById,
     getUserByEmail,
     getUserByUsername,
     createUser,
+    deleteUser,
 };

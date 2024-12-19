@@ -27,9 +27,19 @@ const deleteReview = async (id: number): Promise<boolean> => {
     return true;
 };
 
+const getAllReviewsWithUsers = async (): Promise<Review[]> => {
+    return ReviewDb.getAllReviewsWithUsers();
+};
+
+const getReviewsByUserId = async (userId: number): Promise<Review[]> => {
+    return ReviewDb.getReviewsByUserId(userId);
+};
+
 export default {
     getAllReviews,
     getReviewById,
     createReview,
     deleteReview,
+    getReviewsByUserId,
+    getAllReviewsWithUsers,
 };

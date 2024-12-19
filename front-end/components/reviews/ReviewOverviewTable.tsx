@@ -1,5 +1,5 @@
-import React from "react";
-import { Review } from "../../types";
+import React, { useEffect, useState } from "react";
+import { Review, User } from "../../types";
 import styles from "../../styles/Home.module.css";
 import { useTranslation } from "next-i18next";
 
@@ -9,6 +9,17 @@ type Props = {
 };
 
 const ReviewOverviewTable: React.FC<Props> = ({ reviews, onDelete }: Props) => {
+  const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const user = sessionStorage.getItem("loggedInUser");
+    if (user) {
+      setLoggedInUser(JSON.parse(user));
+    }
+
+    console.log("user " + user);
+  }, []);
+
   const { t } = useTranslation();
 
   return (
@@ -19,6 +30,11 @@ const ReviewOverviewTable: React.FC<Props> = ({ reviews, onDelete }: Props) => {
             <tr>
               <th scope="col">{t("pages.review.score")}</th>
               <th scope="col">{t("pages.review.text")}</th>
+              {loggedInUser?.role !== "user" && (
+                <>
+                  <th scope="col">Username Owner</th>
+                </>
+              )}
               <th></th>
             </tr>
           </thead>
@@ -27,6 +43,11 @@ const ReviewOverviewTable: React.FC<Props> = ({ reviews, onDelete }: Props) => {
               <tr key={index}>
                 <td>{review.score}</td>
                 <td>{review.text}</td>
+                {loggedInUser?.role !== "user" && (
+                  <>
+                    <td>{review.user?.username}</td>
+                  </>
+                )}
                 <td>
                   <button
                     className="border border-red-300 bg-red-600 text-white p-2 rounded-xl"

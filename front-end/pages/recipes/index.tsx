@@ -8,9 +8,10 @@ import Header from "@/components/header";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Link from "next/link";
+import useSWR, { mutate } from "swr";
+import useInterval from "use-interval";
 
 const Recipes: React.FC = () => {
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
 
@@ -26,16 +27,22 @@ const Recipes: React.FC = () => {
   const getRecipes = async () => {
     try {
       const response = await RecipeService.getAllRecipes();
-      const data = await response.json();
-      setRecipes(data);
+      const recipes = await response.json();
+      return { recipes };
     } catch (error) {
       console.error("Failed to fetch recipes", error);
     }
   };
 
-  useEffect(() => {
-    getRecipes();
-  }, []);
+  // useEffect(() => {
+  //   getRecipes();
+  // }, []);
+
+  const { data, isLoading, error } = useSWR(["recipes"], getRecipes);
+
+  useInterval(() => {
+    mutate(getRecipes);
+  }, 5000);
 
   const closeRecipeDetails = () => {
     setSelectedRecipe(null);
@@ -60,7 +67,7 @@ const Recipes: React.FC = () => {
               {t("overview.recipes")}
             </h2>
             {loggedInUser ? (
-              recipes.length > 0 ? (
+              data?.recipes.length > 0 ? (
                 <>
                   <section className="flex justify-center">
                     <Link
@@ -71,7 +78,7 @@ const Recipes: React.FC = () => {
                     </Link>
                   </section>
                   <RecipeOverviewTable
-                    recipes={recipes}
+                    recipes={data?.recipes}
                     selectRecipe={setSelectedRecipe}
                   />
                 </>

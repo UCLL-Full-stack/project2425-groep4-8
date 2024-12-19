@@ -32,6 +32,48 @@ const main = async () => {
         },
     });
 
+    const butter = await prisma.ingredient.create({
+        data: {
+            name: 'Butter',
+            category: 'Dairy',
+        },
+    });
+
+    const milk = await prisma.ingredient.create({
+        data: {
+            name: 'Milk',
+            category: 'Dairy',
+        },
+    });
+
+    const vanilla = await prisma.ingredient.create({
+        data: {
+            name: 'Vanilla Extract',
+            category: 'Flavoring',
+        },
+    });
+
+    const chocolate = await prisma.ingredient.create({
+        data: {
+            name: 'Chocolate',
+            category: 'Sweets',
+        },
+    });
+
+    const bakingPowder = await prisma.ingredient.create({
+        data: {
+            name: 'Baking Powder',
+            category: 'Baking',
+        },
+    });
+
+    const salt = await prisma.ingredient.create({
+        data: {
+            name: 'Salt',
+            category: 'Spices',
+        },
+    });
+
     // Create Users
     const admin = await prisma.user.create({
         data: {
@@ -66,6 +108,17 @@ const main = async () => {
         },
     });
 
+    const user2 = await prisma.user.create({
+        data: {
+            username: 'foodlover123',
+            password: await bcrypt.hash('foodie123', 12),
+            email: 'foodlover123@cookingapp.com',
+            firstName: 'Lover',
+            lastName: 'Food',
+            role: 'user',
+        },
+    });
+
     // Create Recipes and link Ingredients by ID
     const pancakeRecipe = await prisma.recipe.create({
         data: {
@@ -73,11 +126,7 @@ const main = async () => {
             description: 'Fluffy homemade pancakes',
             userId: chef.id,
             ingredients: {
-                connect: [
-                    { id: flour.id }, // Link ingredient by ID
-                    { id: sugar.id },
-                    { id: egg.id },
-                ],
+                connect: [{ id: flour.id }, { id: sugar.id }, { id: egg.id }],
             },
         },
     });
@@ -88,17 +137,88 @@ const main = async () => {
             description: 'Classic vanilla-flavored cake',
             userId: chef.id,
             ingredients: {
-                connect: [{ id: flour.id }, { id: sugar.id }, { id: egg.id }],
+                connect: [
+                    { id: flour.id },
+                    { id: sugar.id },
+                    { id: egg.id },
+                    { id: butter.id },
+                    { id: milk.id },
+                    { id: vanilla.id },
+                ],
             },
         },
     });
 
+    const chocolateCake = await prisma.recipe.create({
+        data: {
+            name: 'Chocolate Cake',
+            description: 'Decadent chocolate cake with rich frosting',
+            userId: chef.id,
+            ingredients: {
+                connect: [
+                    { id: flour.id },
+                    { id: sugar.id },
+                    { id: egg.id },
+                    { id: butter.id },
+                    { id: chocolate.id },
+                    { id: bakingPowder.id },
+                    { id: salt.id },
+                ],
+            },
+        },
+    });
+
+    const chocolateChipCookies = await prisma.recipe.create({
+        data: {
+            name: 'Chocolate Chip Cookies',
+            description: 'Classic chocolate chip cookies with a crunchy texture',
+            userId: chef.id,
+            ingredients: {
+                connect: [
+                    { id: flour.id },
+                    { id: sugar.id },
+                    { id: egg.id },
+                    { id: butter.id },
+                    { id: chocolate.id },
+                ],
+            },
+        },
+    });
+
+    // Create Reviews
     await prisma.review.create({
         data: {
             text: 'The cake was too sweet for my taste.',
             score: 3,
             recipeId: cakeRecipe.id,
             userId: reviewer.id,
+        },
+    });
+
+    await prisma.review.create({
+        data: {
+            text: 'The pancakes were absolutely amazing, light and fluffy!',
+            score: 5,
+            recipeId: pancakeRecipe.id,
+            userId: user2.id,
+        },
+    });
+
+    await prisma.review.create({
+        data: {
+            text: 'Chocolate cake is my all-time favorite! Perfect for chocolate lovers.',
+            score: 5,
+            recipeId: chocolateCake.id,
+            userId: reviewer.id,
+        },
+    });
+
+    await prisma.review.create({
+        data: {
+            text: 'Cookies came out great! Loved the crispy edges.',
+            score: 4,
+            recipeId: chocolateChipCookies.id,
+            userId: user2.id,
         },
     });
 };

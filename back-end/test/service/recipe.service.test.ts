@@ -2,12 +2,14 @@ import RecipeService from '../../service/Recipe.service'; // Adjust the path as 
 import RecipeDb from '../../repository/Recipe.db';
 import { Recipe } from '../../model/Recipe';
 import { User } from '../../model/User';
+import { Role } from '../../types';
 
 // Mocking RecipeDb functions
 jest.mock('../../repository/Recipe.db');
 
 // Create a mock User instance
 const mockUser = new User({
+    id: 1,
     username: 'test',
     password: 'password123',
     email: 'test@example.com',
@@ -15,6 +17,7 @@ const mockUser = new User({
     lastName: 'test',
     recipes: [],
     reviews: [],
+    role: "user" as Role,
 });
 
 // Create a mock Recipe instance
@@ -22,9 +25,8 @@ const mockRecipe = new Recipe({
     id: 0,
     name: 'Test Recipe',
     description: 'A test recipe for unit testing.',
-    creator: mockUser,
-    recipeIngredients: [],
     reviews: [],
+    ingredients: [],
 });
 
 // Reset mocks before each test
@@ -62,9 +64,9 @@ test('getRecipeById should return null if recipe is not found', async () => {
 
 test('createRecipe should create a recipe and return it', async () => {
     (RecipeDb.createRecipe as jest.Mock).mockResolvedValue(mockRecipe);
-
-    const recipe = await RecipeService.createRecipe(mockRecipe);
+    const numberofid = 0
+    const recipe = await RecipeService.createRecipe(mockRecipe, numberofid);
 
     expect(recipe).toEqual(mockRecipe);
-    expect(RecipeDb.createRecipe).toHaveBeenCalledWith(mockRecipe);
+    expect(RecipeDb.createRecipe).toHaveBeenCalledWith(mockRecipe, 0);
 });

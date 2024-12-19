@@ -2,6 +2,7 @@ import UserService from '../../service/User.service';
 import UserDb from '../../repository/User.db';
 import { User } from '../../model/User';
 import bcrypt from 'bcrypt';
+import { Role } from '../../types';
 
 // Mocking UserDb functions
 jest.mock('../../repository/User.db');
@@ -20,6 +21,7 @@ const mockUserData = {
     lastName: 'User',
     recipes: [],
     reviews: [],
+    role: "user" as Role,
 };
 
 const mockUser = new User({
@@ -30,9 +32,10 @@ const mockUser = new User({
     lastName: mockUserData.lastName,
     recipes: mockUserData.recipes,
     reviews: mockUserData.reviews,
+    role: "user" ,
 });
 
-const mockUserForCreate = new User({
+const mockUserForCreate = {
     username: mockUserData.username,
     password: mockUserData.password,
     email: mockUserData.email,
@@ -40,7 +43,8 @@ const mockUserForCreate = new User({
     lastName: mockUserData.lastName,
     recipes: mockUserData.recipes,
     reviews: mockUserData.reviews,
-});
+    role: mockUserData.role,
+};
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -90,5 +94,5 @@ test('createUser should create a user and return it', async () => {
 test('createUser should throw an error if email already exists', async () => {
     (UserDb.getUserByEmail as jest.Mock).mockResolvedValue(mockUser); 
 
-    await expect(UserService.createUser(mockUser)).rejects.toThrow('Email already exists');
+    await expect(UserService.createUser(mockUserForCreate)).rejects.toThrow('Email already exists');
 });
