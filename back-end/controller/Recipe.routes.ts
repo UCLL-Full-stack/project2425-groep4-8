@@ -1,6 +1,7 @@
 import RecipeService from '../service/Recipe.service';
 import { Recipe } from '../model/Recipe';
 import express, { NextFunction, Request, Response } from 'express';
+import { Role } from '../types';
 
 const recipeRouter = express.Router();
 
@@ -185,6 +186,94 @@ recipeRouter.post('/:userId', async (req: Request, res: Response, next: NextFunc
         console.log(userId);
         const newRecipe = await RecipeService.createRecipe(recipe, userId);
         res.status(201).json(newRecipe);
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /recipes/{userId}/{id}:
+ *   put:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Update a recipe by ID for a specific user (restricted by user role)
+ *     tags: [Recipes]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: ID of the user associated with the recipe
+ *         schema:
+ *           type: number
+ *           example: 101
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the recipe to update
+ *         schema:
+ *           type: number
+ *           example: 42
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Updated Recipe Name"
+ *               description:
+ *                 type: string
+ *                 example: "Updated description of the recipe."
+ *               ingredients:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: number
+ *                       example: 12
+ *                     name:
+ *                       type: string
+ *                       example: "Sugar"
+ *                     category:
+ *                       type: string
+ *                       example: "Baking"
+ *             required:
+ *               - name
+ *               - description
+ *               - ingredients
+ *     responses:
+ *       200:
+ *         description: Recipe updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Recipe'
+ *       403:
+ *         description: Access denied
+ *       404:
+ *         description: Recipe not found
+ *       500:
+ *         description: Internal server error
+ */
+recipeRouter.put('/:userId/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const request = req as Request & { auth: { role: Role } };
+        const id = parseInt(req.params.id);
+        const userId = parseInt(req.params.userId);
+        const updatedRecipe = req.body;
+
+        const result = await RecipeService.updateRecipeByIdWithRole(
+            id,
+            updatedRecipe,
+            request.auth.role,
+            userId
+        );
+
+        res.status(200).json(result);
     } catch (error) {
         next(error);
     }

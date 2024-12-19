@@ -10,10 +10,12 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Link from "next/link";
 import useSWR, { mutate } from "swr";
 import useInterval from "use-interval";
+import UpdateRecipeForm from "@/components/recipes/UpdateRecipe";
 
 const Recipes: React.FC = () => {
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     const user = sessionStorage.getItem("loggedInUser");
@@ -43,6 +45,10 @@ const Recipes: React.FC = () => {
   useInterval(() => {
     mutate(getRecipes);
   }, 5000);
+
+  const handleUpdate = () => {
+    mutate(["recipes"]);
+  };
 
   const closeRecipeDetails = () => {
     setSelectedRecipe(null);
@@ -92,7 +98,7 @@ const Recipes: React.FC = () => {
             )}
           </section>
 
-          {selectedRecipe && (
+          {selectedRecipe && !isUpdating && (
             <section className="bg-slate-400 rounded-lg p-6 shadow-lg">
               <h2 className="text-3xl text-white font-semibold">
                 Details for {selectedRecipe.name}
@@ -101,7 +107,23 @@ const Recipes: React.FC = () => {
                 recipe={selectedRecipe}
                 onClose={closeRecipeDetails}
               />
+              {loggedInUser?.role === "chef" && (
+                <button
+                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+                  onClick={() => setIsUpdating(true)}
+                >
+                  Update Recipe
+                </button>
+              )}
             </section>
+          )}
+
+          {selectedRecipe && isUpdating && (
+            <UpdateRecipeForm
+              recipe={selectedRecipe}
+              onClose={() => setIsUpdating(false)}
+              onUpdate={handleUpdate}
+            />
           )}
         </div>
       </main>
