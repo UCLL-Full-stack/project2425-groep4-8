@@ -57,7 +57,7 @@ const Users: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Users</title>
+        <title>{t("home.users")}</title>
       </Head>
       <Header />
       <main className="min-h-screen bg-gradient-to-r px-6 py-10">

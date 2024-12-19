@@ -1,7 +1,7 @@
 import UserDb from '../repository/User.db';
 import { User } from '../model/User';
 import bcrypt from 'bcrypt';
-import { AuthenticationRespone, UserInput } from '../types';
+import { AuthenticationRespone, Role, UserInput } from '../types';
 import { generateJwtToken } from '../util/jwt';
 
 const getAllUsers = async (): Promise<User[]> => {
@@ -14,6 +14,20 @@ const getUserById = async (id: number): Promise<User | null> => {
 
 const getUserByEmail = async (email: string): Promise<User | null> => {
     return UserDb.getUserByEmail(email);
+};
+
+const getUsersById = async (id: number, role: Role): Promise<User[]> => {
+    const user = await UserDb.getUserById(id);
+    console.log(user);
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    if (user.role === 'admin') {
+        return getAllUsers();
+    }
+
+    return [user];
 };
 
 const getUserByUsername = async (username: string): Promise<User | null> => {
@@ -87,4 +101,5 @@ export default {
     createUser,
     authenticate,
     deleteUser,
+    getUsersById,
 };

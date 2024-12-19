@@ -30,6 +30,7 @@ const UserOverviewTable: React.FC<Props> = ({ users, onDelete }: Props) => {
             <tr>
               <th scope="col">{t("pages.user.firstname")}</th>
               <th scope="col">{t("pages.user.lastname")}</th>
+              <th scope="col">{t("pages.user.username")}</th>
               <th></th>
             </tr>
           </thead>
@@ -38,13 +39,14 @@ const UserOverviewTable: React.FC<Props> = ({ users, onDelete }: Props) => {
               <tr key={index}>
                 <td>{user.firstName}</td>
                 <td>{user.lastName}</td>
+                <td>{user.username}</td>
                 {loggedInUser?.role === "admin" && (
                   <td>
                     <button
                       className="border border-red-300 bg-red-600 text-white p-2 rounded-xl"
                       onClick={() => user.id !== undefined && onDelete(user.id)}
                     >
-                      Delete
+                      {t("home.delete")}
                     </button>
                   </td>
                 )}

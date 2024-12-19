@@ -7,7 +7,8 @@
     "login": "Login",
     "logout": "Logout",
     "register": "Register",
-    "nologin": "No access to this page"
+    "nologin": "No access to this page",
+    "delete": "Delete"
   },
   "overview": {
     "users": "Users Overview",
@@ -30,6 +31,7 @@
       "users": "Users",
       "firstname": "Firstname",
       "lastname": "Lastname",
+      "username": "Username",
       "not": "No users available"
     },
     "review": {

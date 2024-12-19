@@ -63,9 +63,36 @@ const deleteReview = async (id: number): Promise<void> => {
     }
 };
 
+const getAllReviewsWithUsers = async (): Promise<Review[]> => {
+    const reviewPrisma = await database.review.findMany({
+        include: { user: true },
+    });
+
+    if (!reviewPrisma || reviewPrisma.length === 0) {
+        return [];
+    }
+
+    return reviewPrisma.map((review) => Review.from(review));
+};
+
+const getReviewsByUserId = async (userId: number): Promise<Review[]> => {
+    const reviewPrisma = await database.review.findMany({
+        where: { userId },
+        include: { user: true },
+    });
+
+    if (!reviewPrisma || reviewPrisma.length === 0) {
+        return [];
+    }
+
+    return reviewPrisma.map((review) => Review.from(review));
+};
+
 export default {
     getAllReviews,
     getReviewById,
     createReview,
     deleteReview,
+    getReviewsByUserId,
+    getAllReviewsWithUsers,
 };

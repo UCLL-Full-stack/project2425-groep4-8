@@ -39,7 +39,7 @@ const Ingredients: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Ingredients</title>
+        <title>{t("home.ingredients")}</title>
       </Head>
       <Header />
       <main className="min-h-screen bg-gradient-to-r px-6 py-10">

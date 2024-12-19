@@ -1,7 +1,7 @@
 import UserService from '../service/User.service';
 import { User } from '../model/User';
 import express, { NextFunction, Request, Response } from 'express';
-import { UserInput } from '../types';
+import { Role, UserInput } from '../types';
 
 const userRouter = express.Router();
 
@@ -260,6 +260,48 @@ userRouter.get('/username/:username', async (req: Request, res: Response, next: 
 
 /**
  * @swagger
+ * /users/id/{id}:
+ *   get:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Get a user by id
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: id of the user to retrieve
+ *         schema:
+ *           type: number
+ *           example: 26
+ *     responses:
+ *       200:
+ *         description: User found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+userRouter.get('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const request = req as Request & { auth: { role: Role } };
+        console.log(request);
+        const id = parseInt(req.params.id);
+        console.log(id);
+        const result = await UserService.getUsersById(id, request.auth.role);
+        console.log(result);
+        res.status(200).json(result);
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
  * /users/signup:
  *   post:
  *     summary: Create a new user account
@@ -369,5 +411,18 @@ userRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction
         next(error);
     }
 });
+
+// userRouter.get('/:id', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
+//     try {
+//         const { role } = req.auth;
+//         const { username } = req.auth;
+//         const id = parseInt(req.params.id);
+
+//         const allUsers = await UserService.getUserById(id);
+//         res.status(200).json(allUsers);
+//     } catch (error) {
+//         next(error);
+//     }
+// });
 
 export default userRouter;
