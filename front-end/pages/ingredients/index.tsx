@@ -5,6 +5,7 @@ import { Ingredient, User } from "../../types";
 import Head from "next/head";
 import Header from "@/components/header";
 import { useTranslation } from "next-i18next";
+import useSWR, { mutate } from "swr";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const Ingredients: React.FC = () => {
@@ -23,16 +24,18 @@ const Ingredients: React.FC = () => {
   const getIngredients = async () => {
     try {
       const response = await IngredientService.getAllIngredients();
-      const data = await response.json();
-      setIngredient(data);
+      const ingredients = await response.json();
+      return { ingredients };
     } catch (error) {
       console.error("Failed to fetch ingredients", error);
     }
   };
 
-  useEffect(() => {
-    getIngredients();
-  }, []);
+  // useEffect(() => {
+  //   getIngredients();
+  // }, []);
+
+  const { data, isLoading, error } = useSWR(["ingredients"], getIngredients);
 
   const { t } = useTranslation();
 
@@ -52,7 +55,7 @@ const Ingredients: React.FC = () => {
               {t("overview.ingredients")}
             </h2>
             {loggedInUser ? (
-              ingredients.length > 0 ? (
+              data?.ingredients.length > 0 ? (
                 <IngredientOverviewTable ingredients={ingredients} />
               ) : (
                 <p className="text-center text-gray-300">

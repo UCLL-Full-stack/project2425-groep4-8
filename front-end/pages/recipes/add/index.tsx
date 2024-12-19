@@ -5,8 +5,18 @@ import Header from "@/components/header";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import AddRecipe from "@/components/recipes/AddRecipe";
+import { User } from "@/types";
 
 const Recipes: React.FC = () => {
+  const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const user = sessionStorage.getItem("loggedInUser");
+    if (user) {
+      setLoggedInUser(JSON.parse(user));
+    }
+  }, []);
+
   const { t } = useTranslation();
 
   return (
@@ -21,12 +31,16 @@ const Recipes: React.FC = () => {
             {t("pages.recipe.recipes")}
           </h1>
 
-          <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-6 text-center">
-              {t("overview.recipes")}
-            </h2>
-            <AddRecipe />
-          </section>
+          {loggedInUser ? (
+            <section className="mb-12">
+              <h2 className="text-2xl font-semibold mb-6 text-center">
+                {t("overview.recipes")}
+              </h2>
+              <AddRecipe />
+            </section>
+          ) : (
+            <p className="text-center text-gray-300">{t("home.nologin")}</p>
+          )}
         </div>
       </main>
     </>
