@@ -15,7 +15,7 @@ import helmet from 'helmet';
 const app = express();
 
 dotenv.config();
-const port = process.env.APP_PORT || 3002;
+const port = process.env.APP_PORT || 3000;
 
 app.use(helmet());
 
@@ -62,6 +62,6 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     }
 });
 
-app.listen(port || 3002, () => {
+app.listen(port || 3000, () => {
     console.log(`Back-end is running on port ${port}.`);
 });

@@ -154,10 +154,10 @@ recipeRouter.get('/:id', async (req: Request, res: Response, next: NextFunction)
  *                   properties:
  *                     id:
  *                       type: number
- *                       example: 12
+ *                       example: 54
  *                     name:
  *                       type: string
- *                       example: Sugar
+ *                       example: Flour
  *                     category:
  *                       type: string
  *                       example: Baking
