@@ -155,15 +155,7 @@ const main = async () => {
             description: 'Decadent chocolate cake with rich frosting',
             userId: chef.id,
             ingredients: {
-                connect: [
-                    { id: flour.id },
-                    { id: sugar.id },
-                    { id: egg.id },
-                    { id: butter.id },
-                    { id: chocolate.id },
-                    { id: bakingPowder.id },
-                    { id: salt.id },
-                ],
+                connect: [{ id: flour.id }],
             },
         },
     });

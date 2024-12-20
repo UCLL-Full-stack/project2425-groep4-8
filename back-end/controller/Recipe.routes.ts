@@ -206,14 +206,12 @@ recipeRouter.post('/:userId', async (req: Request, res: Response, next: NextFunc
  *         description: ID of the user associated with the recipe
  *         schema:
  *           type: number
- *           example: 101
  *       - in: path
  *         name: id
  *         required: true
  *         description: ID of the recipe to update
  *         schema:
  *           type: number
- *           example: 42
  *     requestBody:
  *       required: true
  *       content:
@@ -234,10 +232,10 @@ recipeRouter.post('/:userId', async (req: Request, res: Response, next: NextFunc
  *                   properties:
  *                     id:
  *                       type: number
- *                       example: 12
+ *                       example: 63
  *                     name:
  *                       type: string
- *                       example: "Sugar"
+ *                       example: "Flour"
  *                     category:
  *                       type: string
  *                       example: "Baking"
