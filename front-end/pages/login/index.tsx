@@ -10,6 +10,12 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 const Login: React.FC = () => {
   const { t } = useTranslation();
 
+  const users = [
+    { username: "admin", password: "admin123", role: "admin" },
+    { username: "chefjohn", password: "chef123", role: "chef" },
+    { username: "reviewerjane", password: "review123", role: "reviewer" },
+  ];
+
   return (
     <>
       <Head>
@@ -23,6 +29,26 @@ const Login: React.FC = () => {
             <h2 className="text-2xl font-semibold mb-6 text-center">Login</h2>
             <UserLoginForm />
           </section>
+        </div>
+        <div className="  flex justify-center">
+          <table className="bg-white border border-gray-200 shadow-lg">
+            <thead>
+              <tr>
+                <th className="px-4 py-2 border">{t("home.username")}</th>
+                <th className="px-4 py-2 border">{t("home.password")}</th>
+                <th className="px-4 py-2 border">{t("home.role")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user, index) => (
+                <tr key={index} className="hover:bg-gray-100">
+                  <td className="px-4 py-2 border">{user.username}</td>
+                  <td className="px-4 py-2 border">{user.password}</td>
+                  <td className="px-4 py-2 border">{user.role}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </main>
     </>

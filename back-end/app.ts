@@ -10,10 +10,14 @@ import ingredientRouter from './controller/Ingredient.routes';
 import reviewRouter from './controller/Review.routes';
 import { expressjwt } from 'express-jwt';
 import { Request, Response, NextFunction } from 'express';
+import helmet from 'helmet';
 
 const app = express();
+
 dotenv.config();
 const port = process.env.APP_PORT || 3002;
+
+app.use(helmet());
 
 app.use(cors());
 app.use(bodyParser.json());

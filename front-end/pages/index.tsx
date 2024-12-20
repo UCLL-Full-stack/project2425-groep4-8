@@ -10,12 +10,6 @@ export default function Home() {
 
   const { t } = useTranslation();
 
-  const users = [
-    { username: "admin", password: "admin123", role: "admin" },
-    { username: "chefjohn", password: "chef123", role: "chef" },
-    { username: "reviewerjane", password: "review123", role: "reviewer" },
-  ];
-
   return (
     <>
       <Header />
@@ -36,26 +30,6 @@ export default function Home() {
           <p className="text-lg md:text-xl mb-8 text-gray-200">
             {t("pages.home.share")}
           </p>
-          <div className="  flex justify-center">
-            <table className="bg-white border border-gray-200 shadow-lg">
-              <thead>
-                <tr>
-                  <th className="px-4 py-2 border">{t("home.username")}</th>
-                  <th className="px-4 py-2 border">{t("home.password")}</th>
-                  <th className="px-4 py-2 border">{t("home.role")}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user, index) => (
-                  <tr key={index} className="hover:bg-gray-100">
-                    <td className="px-4 py-2 border">{user.username}</td>
-                    <td className="px-4 py-2 border">{user.password}</td>
-                    <td className="px-4 py-2 border">{user.role}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
         </div>
       </main>
     </>
